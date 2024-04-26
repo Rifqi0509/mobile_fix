@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(RiwayatApp());
+  runApp(riwayatapp());
 }
 
-class RiwayatApp extends StatelessWidget {
+class riwayatapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -116,8 +116,8 @@ class KunjunganCard extends StatelessWidget {
             return DataRow(cells: [
               DataCell(Text(kunjungan.no.toString())),
               DataCell(Text(kunjungan.tanggal)),
-              DataCell(Text(kunjungan.nama)),
-              DataCell(Text(kunjungan.tujuan)),
+              DataCell(Text(kunjungan.nama)), // Tampilkan nama pengunjung
+              DataCell(Text(kunjungan.tujuan)), // Tampilkan tujuan kunjungan
               DataCell(
                 Container(
                   padding: EdgeInsets.all(8), // Memberikan padding pada kotak

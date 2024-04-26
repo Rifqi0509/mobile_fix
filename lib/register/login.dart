@@ -45,22 +45,11 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       print('Failed to authenticate: ${response.body}');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Email atau password salah.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Email atau password salah.'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }

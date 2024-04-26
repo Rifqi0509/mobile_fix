@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pantau_pro/register/Home_page.dart';
 import 'package:pantau_pro/register/login.dart';
 
 void main() {
@@ -92,7 +93,7 @@ class MyHomePage extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          LoginPage(),
+                          HomePage(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         var begin = Offset(-1.0, 0.0);

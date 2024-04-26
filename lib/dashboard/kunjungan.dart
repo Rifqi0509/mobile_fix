@@ -12,8 +12,29 @@ class _KunjunganPageState extends State<KunjunganPage> {
   TextEditingController _tujuanController = TextEditingController();
   TextEditingController _perusahaanController = TextEditingController();
   TextEditingController _kontakController = TextEditingController();
+  TextEditingController _pihakController =
+      TextEditingController(); // Controller for selected pihak
   DateTime _selectedDate = DateTime.now(); // Menyimpan tanggal kunjungan
   TimeOfDay _selectedTime = TimeOfDay.now(); // Menyimpan waktu kunjungan
+  String _selectedPihak = ''; // Menyimpan pilihan pihak yang ingin ditemui
+
+  // Flags to track whether each field is filled
+  bool _namaIsFilled = false;
+  bool _alamatIsFilled = false;
+  bool _tujuanIsFilled = false;
+  bool _perusahaanIsFilled = false;
+  bool _kontakIsFilled = false;
+  bool _pihakIsSelected =
+      false; // Menyimpan status pemilihan pihak yang ingin ditemui
+
+  // Daftar pilihan pihak yang ingin ditemui
+  List<String> _pihakOptions = [
+    'Pilih Pihak yang Ingin Ditemui',
+    'Divisi A',
+    'Divisi B',
+    'Divisi C',
+    // Tambahkan divisi lain jika diperlukan
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +61,9 @@ class _KunjunganPageState extends State<KunjunganPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Nama TextField
                       Text(
-                        'Nama ',
+                        'Nama *',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -51,17 +73,35 @@ class _KunjunganPageState extends State<KunjunganPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _namaController,
+                        onChanged: (value) {
+                          setState(() {
+                            _namaIsFilled = value.isNotEmpty;
+                          });
+                        },
                         decoration: InputDecoration(
-                          hintText: 'Masukkan nama ',
+                          hintText: 'Masukkan nama',
                           hintStyle: TextStyle(color: Colors.grey),
                           border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Colors.white,
                         ),
                       ),
+                      // Show warning if nama is not filled
+                      if (!_namaIsFilled)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            'Nama harus diisi!',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
                       SizedBox(height: 20),
+                      // Alamat TextField
                       Text(
-                        'Alamat ',
+                        'Alamat *',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -71,17 +111,35 @@ class _KunjunganPageState extends State<KunjunganPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _alamatController,
+                        onChanged: (value) {
+                          setState(() {
+                            _alamatIsFilled = value.isNotEmpty;
+                          });
+                        },
                         decoration: InputDecoration(
-                          hintText: 'Masukkan alamat ',
+                          hintText: 'Masukkan alamat',
                           hintStyle: TextStyle(color: Colors.grey),
                           border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Colors.white,
                         ),
                       ),
+                      // Show warning if alamat is not filled
+                      if (!_alamatIsFilled)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            'Alamat harus diisi!',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
                       SizedBox(height: 20),
+                      // Tujuan Kunjungan TextField
                       Text(
-                        'Tujuan Kunjungan',
+                        'Tujuan Kunjungan *',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -91,6 +149,11 @@ class _KunjunganPageState extends State<KunjunganPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _tujuanController,
+                        onChanged: (value) {
+                          setState(() {
+                            _tujuanIsFilled = value.isNotEmpty;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: 'Masukkan tujuan kunjungan',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -99,9 +162,22 @@ class _KunjunganPageState extends State<KunjunganPage> {
                           fillColor: Colors.white,
                         ),
                       ),
+                      // Show warning if tujuan kunjungan is not filled
+                      if (!_tujuanIsFilled)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            'Tujuan kunjungan harus diisi!',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
                       SizedBox(height: 20),
+                      // Asal Instansi TextField
                       Text(
-                        'Asal Instansi',
+                        'Asal Instansi *',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -111,6 +187,11 @@ class _KunjunganPageState extends State<KunjunganPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _perusahaanController,
+                        onChanged: (value) {
+                          setState(() {
+                            _perusahaanIsFilled = value.isNotEmpty;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: 'Masukkan nama Instansi',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -119,9 +200,22 @@ class _KunjunganPageState extends State<KunjunganPage> {
                           fillColor: Colors.white,
                         ),
                       ),
+                      // Show warning if asal instansi is not filled
+                      if (!_perusahaanIsFilled)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            'Asal Instansi harus diisi!',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
                       SizedBox(height: 20),
+                      // Nomor Telepon TextField
                       Text(
-                        'Nomor Telepon',
+                        'Nomor Telepon *',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -131,6 +225,11 @@ class _KunjunganPageState extends State<KunjunganPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _kontakController,
+                        onChanged: (value) {
+                          setState(() {
+                            _kontakIsFilled = value.isNotEmpty;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: 'Masukkan Nomor Telepon',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -139,9 +238,63 @@ class _KunjunganPageState extends State<KunjunganPage> {
                           fillColor: Colors.white,
                         ),
                       ),
+                      // Show warning if nomor telepon is not filled
+                      if (!_kontakIsFilled)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            'Nomor Telepon harus diisi!',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
                       SizedBox(height: 20),
+                      // Pihak yang Ingin Ditemui TextField
                       Text(
-                        'Tanggal Kunjungan',
+                        'Pihak yang Ingin Ditemui *',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _pihakController,
+                        onChanged: (value) {
+                          setState(() {
+                            _pihakIsSelected = value.isNotEmpty;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Pilih Pihak yang Ingin Ditemui',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        onTap: () {
+                          _selectPihak(context);
+                        },
+                      ),
+                      // Show warning if pihak yang ingin ditemui is not selected
+                      if (!_pihakIsSelected)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            'Pihak yang ingin ditemui harus dipilih!',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      SizedBox(height: 20),
+                      // Tanggal Kunjungan Picker
+                      Text(
+                        'Tanggal Kunjungan *',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -173,9 +326,10 @@ class _KunjunganPageState extends State<KunjunganPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+
+                      // Waktu Kunjungan Picker
                       Text(
-                        'Waktu Kunjungan',
+                        'Waktu Kunjungan *',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -212,21 +366,15 @@ class _KunjunganPageState extends State<KunjunganPage> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            String nama = _namaController.text;
-                            String alamat = _alamatController.text;
-                            String tujuan = _tujuanController.text;
-                            String perusahaan = _perusahaanController.text;
-                            String kontak = _kontakController.text;
-                            String tanggal = _selectedDate.toString();
-                            String waktu = _selectedTime.format(context);
-                            // Implementasi logika untuk menyimpan data kunjungan
-
-                            // Navigasi kembali ke halaman utama
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()),
-                            );
+                            // Validate form before navigating
+                            if (_validateForm()) {
+                              // Navigate to home page if form is complete
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.orange,
@@ -255,6 +403,18 @@ class _KunjunganPageState extends State<KunjunganPage> {
     );
   }
 
+  // Validate form method
+  bool _validateForm() {
+    // Check if all required fields are filled
+    return _namaIsFilled &&
+        _alamatIsFilled &&
+        _tujuanIsFilled &&
+        _perusahaanIsFilled &&
+        _kontakIsFilled &&
+        _pihakIsSelected;
+  }
+
+  // Date and time picker methods
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -277,5 +437,47 @@ class _KunjunganPageState extends State<KunjunganPage> {
       setState(() {
         _selectedTime = picked;
       });
+  }
+
+  // Select pihak method
+  Future<void> _selectPihak(BuildContext context) async {
+    String? selectedPihak = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Pilih Pihak yang Ingin Ditemui'),
+          content: DropdownButtonFormField<String>(
+            items: _pihakOptions.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              Navigator.pop(context, value);
+            },
+          ),
+        );
+      },
+    );
+
+    if (selectedPihak != null) {
+      setState(() {
+        _selectedPihak = selectedPihak;
+        _pihakController.text = selectedPihak;
+        _pihakIsSelected = true;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _namaController.dispose();
+    _alamatController.dispose();
+    _tujuanController.dispose();
+    _perusahaanController.dispose();
+    _kontakController.dispose();
+    _pihakController.dispose(); // Dispose controller for pihak
+    super.dispose();
   }
 }
