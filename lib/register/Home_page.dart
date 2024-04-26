@@ -6,6 +6,7 @@ import 'package:pantau_pro/view/landing.dart';
 import 'package:pantau_pro/dashboard/kunjungan.dart';
 import 'package:pantau_pro/dashboard/feedback.dart';
 import 'package:pantau_pro/dashboard/riwayat.dart';
+import 'package:badges/badges.dart';
 
 class HomePage extends StatelessWidget {
   int _selectedIndex = 0;
@@ -130,7 +131,7 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RiwayatApp()),
+                      MaterialPageRoute(builder: (context) => riwayatapp()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

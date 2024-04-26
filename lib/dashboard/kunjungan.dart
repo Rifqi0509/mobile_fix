@@ -30,9 +30,9 @@ class _KunjunganPageState extends State<KunjunganPage> {
   // Daftar pilihan pihak yang ingin ditemui
   List<String> _pihakOptions = [
     'Pilih Pihak yang Ingin Ditemui',
-    'Divisi A',
-    'Divisi B',
-    'Divisi C',
+    'Departemen A',
+    'Departemen B',
+    'Departemen C',
     // Tambahkan divisi lain jika diperlukan
   ];
 

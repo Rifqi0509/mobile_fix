@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:pantau_pro/register/register.dart';
 import 'package:pantau_pro/register/Home_page.dart';
+
+void main() {
+  runApp(LoginApp());
+}
 
 class LoginApp extends StatelessWidget {
   @override
@@ -22,29 +25,28 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordVisible = false;
 
+  // Dummy user data for demonstration
+  final Map<String, String> _userData = {
+    'user@gmail.com': '123',
+    'user2@example.com': 'password2',
+    // Add more user credentials as needed
+  };
+
   Future<void> _login() async {
-    final String url = 'http://localhost:8000/api/login_flutter';
-
-    final response = await http.post(
-      Uri.parse(url),
-      body: {
-        'email': _emailController.text,
-        'password': _passwordController.text,
-      },
-    );
-
-    if (response.statusCode == 200) {
+    // Check if user credentials match
+    if (_userData.containsKey(_emailController.text) &&
+        _userData[_emailController.text] == _passwordController.text) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
-      print('Failed to authenticate: ${response.body}');
+      // Show error message if credentials are incorrect
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Email atau password salah.'),
@@ -67,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'Asset/image/mdr.png', // Ganti dengan path gambar kamu
+                  'Asset/image/mdr.png',
                   width: 250,
                   height: 150,
                 ),
@@ -113,22 +115,18 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: _login,
                           style: ElevatedButton.styleFrom(
                             primary: Colors.orange,
-                            shadowColor:
-                                Colors.black, // Tambahkan warna bayangan
-                            elevation: 5, // Tambahkan elevasi untuk bayangan
+                            shadowColor: Colors.black,
+                            elevation: 5,
                             padding: EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 40),
                             onPrimary: Colors.white,
                           ),
                           child: Text(
                             'Login',
-                            style:
-                                TextStyle(fontSize: 18), // Perbesar ukuran fo,
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
-                        SizedBox(
-                            height:
-                                15), // Tambahkan spasi antara tombol Login dan teks "Belum punya akun?"
+                        SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

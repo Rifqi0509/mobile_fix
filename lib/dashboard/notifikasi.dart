@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:pantau_pro/dashboard/riwayat.dart';
+import 'package:pantau_pro/register/Home_page.dart';
+
 void main() {
   runApp(NotificationPage());
 }
@@ -65,7 +68,7 @@ class NotificationHomePage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RiwayatApp()),
+              MaterialPageRoute(builder: (context) => HomePage()),
             );
           },
         ),
@@ -124,124 +127,9 @@ class NotificationHomePage extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => RiwayatApp()),
+            MaterialPageRoute(builder: (context) => riwayatapp()),
           );
         },
-      ),
-    );
-  }
-}
-
-class RiwayatApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Riwayat Pengajuan'),
-        ),
-        body: KunjunganCard(),
-      ),
-    );
-  }
-}
-
-class Kunjungan {
-  final String status;
-  final String? code; // Make it optional to match the notification structure
-  final DateTime date;
-
-  Kunjungan({
-    required this.status,
-    this.code,
-    required this.date,
-  });
-}
-
-class KunjunganCard extends StatelessWidget {
-  final List<Kunjungan> kunjunganList = [
-    Kunjungan(
-      status: 'Disetujui',
-      code: generateRandomCode(),
-      date: DateTime(2024, 4, 25),
-    ),
-    Kunjungan(
-      status: 'Ditolak',
-      date: DateTime(2024, 4, 24),
-    ),
-    Kunjungan(
-      status: 'Disetujui',
-      code: generateRandomCode(),
-      date: DateTime(2024, 4, 23),
-    ),
-    Kunjungan(
-      status: 'Ditolak',
-      date: DateTime(2024, 4, 22),
-    ),
-    Kunjungan(
-      status: 'Disetujui',
-      code: generateRandomCode(),
-      date: DateTime(2024, 4, 21),
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Card(
-        elevation: 4,
-        child: DataTable(
-          headingRowColor:
-              MaterialStateColor.resolveWith((states) => Colors.orange),
-          columns: [
-            DataColumn(
-                label:
-                    Text('No', style: TextStyle(fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Tanggal',
-                    style: TextStyle(fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Status',
-                    style: TextStyle(fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Kode Unik',
-                    style: TextStyle(fontWeight: FontWeight.bold))),
-          ],
-          rows: kunjunganList.map((kunjungan) {
-            Color statusColor = Colors.black; // Default color
-
-            if (kunjungan.status == 'Disetujui') {
-              statusColor = Colors.green;
-            } else if (kunjungan.status == 'Ditolak') {
-              statusColor = Colors.red;
-            }
-
-            return DataRow(cells: [
-              DataCell(Text(
-                (kunjunganList.indexOf(kunjungan) + 1)
-                    .toString(), // Adjust numbering
-              )),
-              DataCell(Text(
-                '${kunjungan.date.day}/${kunjungan.date.month}/${kunjungan.date.year}',
-              )),
-              DataCell(
-                Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: statusColor,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    kunjungan.status,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              DataCell(Text(kunjungan.code ?? '')),
-            ]);
-          }).toList(),
-        ),
       ),
     );
   }

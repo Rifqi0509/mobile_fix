@@ -6,7 +6,20 @@ void main() {
   runApp(landingapp());
 }
 
-class landingapp extends StatelessWidget {
+class landingapp extends StatefulWidget {
+  @override
+  _landingappState createState() => _landingappState();
+}
+
+class _landingappState extends State {
+  bool _isEnglish = false;
+
+  void _toggleLanguage() {
+    setState(() {
+      _isEnglish = !_isEnglish;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,12 +33,20 @@ class landingapp extends StatelessWidget {
               TextStyle(color: const Color.fromARGB(221, 255, 255, 255)),
         ),
       ),
-      home: MyHomePage(),
+      home: MyHomePage(
+        isEnglish: _isEnglish,
+        toggleLanguage: _toggleLanguage,
+      ),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
+  final bool isEnglish;
+  final VoidCallback toggleLanguage;
+
+  MyHomePage({required this.isEnglish, required this.toggleLanguage});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +58,18 @@ class MyHomePage extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent, // Buat latar belakang transparan
         elevation: 0,
+        actions: [
+          TextButton(
+            onPressed: toggleLanguage,
+            child: Text(
+              isEnglish ? 'Bahasa Indonesia' : 'English',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -47,7 +80,8 @@ class MyHomePage extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Pantau \n', // Teks pertama
+                    text:
+                        isEnglish ? 'Monitor \n' : 'Pantau \n', // Teks pertama
                     style: TextStyle(
                       fontSize: 60,
                       color: Colors.white,
@@ -57,7 +91,7 @@ class MyHomePage extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: 'Tamu Pro', // Teks kedua
+                    text: isEnglish ? 'Guest Pro' : 'Tamu Pro', // Teks kedua
                     style: TextStyle(
                       fontSize: 60,
                       color: Colors.white,
@@ -93,7 +127,7 @@ class MyHomePage extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          HomePage(),
+                          LoginApp(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         var begin = Offset(-1.0, 0.0);
@@ -116,7 +150,7 @@ class MyHomePage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                 ),
                 child: Text(
-                  'Buat Kunjungan',
+                  isEnglish ? 'Create Visit' : 'Buat Kunjungan',
                   style: TextStyle(
                     color: Colors.orange,
                     fontSize: 20,
@@ -135,8 +169,10 @@ class MyHomePage extends StatelessWidget {
                   Expanded(
                     child: Align(
                       alignment: Alignment.bottomCenter,
-                      child: Text('Powered By Uta.',
-                          style: TextStyle(color: Colors.white)),
+                      child: Text(
+                        isEnglish ? 'Powered By Uta.' : 'Didukung Oleh Uta.',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
