@@ -6,10 +6,11 @@ import 'package:pantau_pro/view/landing.dart';
 import 'package:pantau_pro/dashboard/kunjungan.dart';
 import 'package:pantau_pro/dashboard/feedback.dart';
 import 'package:pantau_pro/dashboard/riwayat.dart';
-import 'package:badges/badges.dart';
 
 class HomePage extends StatelessWidget {
   int _selectedIndex = 0;
+
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,12 @@ class HomePage extends StatelessWidget {
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                      color: const Color.fromARGB(
-                          255, 255, 255, 255)!), // Border color
+                  borderSide: const BorderSide(
+                      color: Color.fromARGB(
+                          255, 255, 255, 255)), // Border color
                 ),
               ),
               onChanged: (value) {
@@ -37,19 +38,19 @@ class HomePage extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Card(
             child: Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: AssetImage(
                       'Asset/image/background.jpg'), // Change with your image path
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(50),
+              child: const Padding(
+                padding: EdgeInsets.all(50),
                 child: Text(
                   'Selamat datang di Pantau Tamu Pro!',
                   style: TextStyle(
@@ -59,30 +60,29 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               children: [
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => KunjunganPage()),
+                      MaterialPageRoute(builder: (context) => const KunjunganPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: Colors.black,
+                    foregroundColor: Colors.black, backgroundColor: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: CardWithIcon(
+                  child: const CardWithIcon(
                     imagePath: 'Asset/image/dbform.png',
                     text: 'Buat Kunjungan',
                   ),
@@ -91,18 +91,17 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SurveyApp()),
+                      MaterialPageRoute(builder: (context) => const SurveyApp()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: Colors.black,
+                    foregroundColor: Colors.black, backgroundColor: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: CardWithIcon(
+                  child: const CardWithIcon(
                     imagePath: 'Asset/image/survey.png',
                     text: 'Survey Kepuasan',
                   ),
@@ -111,18 +110,17 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FeedbackPage()),
+                      MaterialPageRoute(builder: (context) => const FeedbackPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: Colors.black,
+                    foregroundColor: Colors.black, backgroundColor: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: CardWithIcon(
+                  child: const CardWithIcon(
                     imagePath: 'Asset/image/feedback.png',
                     text: 'Feedback',
                   ),
@@ -131,18 +129,17 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => riwayatapp()),
+                      MaterialPageRoute(builder: (context) => const riwayatapp()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: Colors.black,
+                    foregroundColor: Colors.black, backgroundColor: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: CardWithIcon(
+                  child: const CardWithIcon(
                     imagePath: 'Asset/image/riwayat.png',
                     text: 'Riwayat Pengajuan',
                   ),
@@ -163,23 +160,23 @@ class HomePage extends StatelessWidget {
             // Navigate to Home page
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => landingapp()),
+              MaterialPageRoute(builder: (context) => const landingapp()),
             );
           } else if (index == 1) {
             // Navigate to Notifications page
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NotificationPage()),
+              MaterialPageRoute(builder: (context) => const NotificationPage()),
             );
           } else if (index == 2) {
             // Navigate to Profile page
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => EditProfilePage()),
+              MaterialPageRoute(builder: (context) => const EditProfilePage()),
             );
           }
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -218,10 +215,10 @@ class CardWithIcon extends StatelessWidget {
           width: 80, // Ubah ukuran ikon sesuai keinginan Anda
           height: 80, // Ubah ukuran ikon sesuai keinginan Anda
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(
           text,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
           textAlign: TextAlign.center,
         ),
       ],

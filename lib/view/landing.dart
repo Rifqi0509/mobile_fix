@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pantau_pro/register/Home_page.dart';
 import 'package:pantau_pro/register/login.dart';
 
 void main() {
-  runApp(landingapp());
+  runApp(const landingapp());
 }
 
 class landingapp extends StatefulWidget {
+  const landingapp({super.key});
+
   @override
   _landingappState createState() => _landingappState();
 }
@@ -27,10 +28,10 @@ class _landingappState extends State {
       theme: ThemeData(
         primaryColor: Colors.orange,
         hintColor: Colors.orangeAccent,
-        scaffoldBackgroundColor: Color.fromARGB(255, 255, 157, 0),
-        textTheme: TextTheme(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 157, 0),
+        textTheme: const TextTheme(
           titleLarge:
-              TextStyle(color: const Color.fromARGB(221, 255, 255, 255)),
+              TextStyle(color: Color.fromARGB(221, 255, 255, 255)),
         ),
       ),
       home: MyHomePage(
@@ -45,7 +46,7 @@ class MyHomePage extends StatelessWidget {
   final bool isEnglish;
   final VoidCallback toggleLanguage;
 
-  MyHomePage({required this.isEnglish, required this.toggleLanguage});
+  const MyHomePage({super.key, required this.isEnglish, required this.toggleLanguage});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,7 @@ class MyHomePage extends StatelessWidget {
             onPressed: toggleLanguage,
             child: Text(
               isEnglish ? 'Bahasa Indonesia' : 'English',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
@@ -82,7 +83,7 @@ class MyHomePage extends StatelessWidget {
                   TextSpan(
                     text:
                         isEnglish ? 'Monitor \n' : 'Pantau \n', // Teks pertama
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 60,
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
@@ -92,7 +93,7 @@ class MyHomePage extends StatelessWidget {
                   ),
                   TextSpan(
                     text: isEnglish ? 'Guest Pro' : 'Tamu Pro', // Teks kedua
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 60,
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
@@ -104,12 +105,12 @@ class MyHomePage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 200),
+            const SizedBox(height: 200),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(17),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black,
                     blurRadius: 2,
@@ -127,10 +128,10 @@ class MyHomePage extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          LoginApp(),
+                          const LoginApp(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
-                        var begin = Offset(-1.0, 0.0);
+                        var begin = const Offset(-1.0, 0.0);
                         var end = Offset.zero;
                         var curve = Curves.ease;
                         var tween = Tween(begin: begin, end: end)
@@ -145,13 +146,13 @@ class MyHomePage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.transparent,
+                  backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                 ),
                 child: Text(
                   isEnglish ? 'Create Visit' : 'Buat Kunjungan',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.orange,
                     fontSize: 20,
                     fontFamily: 'Inter',
@@ -162,7 +163,7 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 50, horizontal: 50),
+              padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -171,7 +172,7 @@ class MyHomePage extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       child: Text(
                         isEnglish ? 'Powered By Uta.' : 'Didukung Oleh Uta.',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),

@@ -5,10 +5,12 @@ import 'package:pantau_pro/dashboard/riwayat.dart';
 import 'package:pantau_pro/register/Home_page.dart';
 
 void main() {
-  runApp(NotificationPage());
+  runApp(const NotificationPage());
 }
 
 class NotificationPage extends StatelessWidget {
+  const NotificationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> notifications = [
@@ -39,13 +41,13 @@ class NotificationPage extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blueGrey[900],
         hintColor: Colors.blueGrey[900],
-        textTheme: TextTheme(
-          headline6: TextStyle(
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
               color: Colors.black87),
-          subtitle1: TextStyle(fontSize: 16.0, color: Colors.black87),
-          bodyText1: TextStyle(fontSize: 14.0, color: Colors.black54),
+          titleMedium: TextStyle(fontSize: 16.0, color: Colors.black87),
+          bodyLarge: TextStyle(fontSize: 14.0, color: Colors.black54),
         ),
       ),
       home: NotificationHomePage(notifications: notifications),
@@ -56,15 +58,15 @@ class NotificationPage extends StatelessWidget {
 class NotificationHomePage extends StatelessWidget {
   final List<Map<String, dynamic>> notifications;
 
-  NotificationHomePage({required this.notifications});
+  const NotificationHomePage({super.key, required this.notifications});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifikasi'),
+        title: const Text('Notifikasi'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.push(
               context,
@@ -108,7 +110,7 @@ class NotificationHomePage extends StatelessWidget {
             Border.all(color: Colors.grey[300]!), // Menambah border berwarna
         borderRadius: BorderRadius.circular(10), // Mengubah border-radius
       ),
-      padding: EdgeInsets.all(16.0), // Mengubah padding
+      padding: const EdgeInsets.all(16.0), // Mengubah padding
       child: ListTile(
         title: Text(
           'Permohonan ${status.toUpperCase()}', // Mengubah status menjadi huruf besar
@@ -120,14 +122,14 @@ class NotificationHomePage extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            code != null ? Text('Kode Unik: $code') : SizedBox(),
+            code != null ? Text('Kode Unik: $code') : const SizedBox(),
             Text('Tanggal: $formattedDate'),
           ],
         ),
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => riwayatapp()),
+            MaterialPageRoute(builder: (context) => const riwayatapp()),
           );
         },
       ),

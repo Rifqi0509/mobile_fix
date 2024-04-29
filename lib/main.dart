@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:pantau_pro/register/register.dart';
 import 'package:pantau_pro/view/landing.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class RegisterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: RegisterPage(),
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
       home: SplashScreen(), // Mengatur SplashScreen sebagai layar awal
     );
   }
 }
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -29,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     );
     _fadeAnimation = Tween<double>(
       begin: 0.0,
@@ -45,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => landingapp()),
+          MaterialPageRoute(builder: (_) => const landingapp()),
         );
       }
     });
@@ -54,14 +69,14 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 153, 0),
+      backgroundColor: const Color.fromARGB(255, 255, 153, 0),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FadeTransition(
               opacity: _fadeAnimation,
-              child: Text(
+              child: const Text(
                 'Pantau Tamu Pro',
                 style: TextStyle(
                   fontSize: 48,
@@ -71,12 +86,12 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
             ),
-            SizedBox(height: 20), // Spacer
+            const SizedBox(height: 20), // Spacer
             FadeTransition(
               opacity: _fadeAnimation,
               child: CircularProgressIndicator(
                 // Animasi loading horizontal
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                 backgroundColor: Colors.white.withOpacity(0.3),
               ),
             ),

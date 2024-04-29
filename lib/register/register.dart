@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:pantau_pro/register/login.dart';
+import 'package:http/http.dart' as http;
+import 'login.dart';
 
 void main() {
   runApp(RegisterApp());
 }
 
 class RegisterApp extends StatelessWidget {
+  const RegisterApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,13 +24,15 @@ class RegisterApp extends StatelessWidget {
 }
 
 class RegisterPage extends StatelessWidget {
+  const RegisterPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -48,22 +54,23 @@ class RegisterPage extends StatelessWidget {
 }
 
 class RegisterForm extends StatefulWidget {
+  const RegisterForm({Key? key}) : super(key: key);
+
   @override
   _RegisterFormState createState() => _RegisterFormState();
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _namaController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _namaController = TextEditingController();
   final TextEditingController _alamatController = TextEditingController();
   final TextEditingController _teleponController = TextEditingController();
   final TextEditingController _tanggalLahirController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   bool _isObscure = true;
 
@@ -87,12 +94,66 @@ class _RegisterFormState extends State<RegisterForm> {
 
   void _showSuccessSnackbar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Registrasi berhasil!'),
         duration: Duration(seconds: 2),
         backgroundColor: Colors.green,
       ),
     );
+  }
+
+  Future<void> _register() async {
+    var url = Uri.parse('http://localhost:8000/api/register_flutter');
+    // Buat body request dalam format JSON
+    var body = jsonEncode({
+      'username': _usernameController.text,
+      'name': _namaController.text,
+      'email': _emailController.text,
+      'password': _passwordController.text,
+      'alamat': _alamatController.text,
+      'no_telepon': _teleponController.text,
+      'tanggal_lahir': _tanggalLahirController.text,
+    });
+
+    try {
+      // Melakukan permintaan POST ke API Laravel
+      var response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+      // Memeriksa status kode response
+      if (response.statusCode == 200) {
+        print('Registrasi berhasil');
+        _showSuccessSnackbar(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      } else {
+        print('Registrasi gagal: ${response.reasonPhrase}');
+        // Tampilkan snackbar registrasi gagal
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Registrasi gagal: ${response.reasonPhrase}'),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      // Menangani kesalahan saat melakukan permintaan HTTP
+      print('Terjadi kesalahan: $e');
+      // Tampilkan snackbar kesalahan
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Terjadi kesalahan: $e'),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -105,10 +166,10 @@ class _RegisterFormState extends State<RegisterForm> {
             color: Colors.black.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 4,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
@@ -118,7 +179,7 @@ class _RegisterFormState extends State<RegisterForm> {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -126,7 +187,7 @@ class _RegisterFormState extends State<RegisterForm> {
             children: [
               TextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Username *',
                   prefixIcon: Icon(Icons.person),
                 ),
@@ -137,10 +198,10 @@ class _RegisterFormState extends State<RegisterForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _namaController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nama *',
                   prefixIcon: Icon(Icons.person),
                 ),
@@ -151,10 +212,10 @@ class _RegisterFormState extends State<RegisterForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email *',
                   prefixIcon: Icon(Icons.email),
                 ),
@@ -166,12 +227,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password *',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
                         _isObscure ? Icons.visibility_off : Icons.visibility),
@@ -190,12 +251,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _confirmPasswordController,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password *',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
                         _isObscure ? Icons.visibility_off : Icons.visibility),
@@ -217,10 +278,10 @@ class _RegisterFormState extends State<RegisterForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _alamatController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Alamat *',
                   prefixIcon: Icon(Icons.location_on),
                 ),
@@ -231,10 +292,10 @@ class _RegisterFormState extends State<RegisterForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _teleponController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nomor Telepon *',
                   prefixIcon: Icon(Icons.phone),
                 ),
@@ -246,40 +307,31 @@ class _RegisterFormState extends State<RegisterForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: AbsorbPointer(
                   child: TextFormField(
                     controller: _tanggalLahirController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Tanggal Lahir *',
                       prefixIcon: Icon(Icons.calendar_today),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState != null &&
-                      _formKey.currentState!.validate()) {
-                    // Lakukan sesuatu dengan data pendaftaran yang telah dimasukkan
-                    // Tampilkan snackbar registrasi berhasil
-                    _showSuccessSnackbar(context);
-                    // Navigasi ke halaman login setelah registrasi berhasil
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  }
+                  _register();
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
+                  backgroundColor: Colors.white,
                   shadowColor: Colors.black,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                 ),
-                child: Text(
+                child: const Text(
                   'Register',
                   style: TextStyle(
                     color: Colors.orange,
@@ -290,19 +342,20 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Sudah punya akun? "),
+                  const Text("Sudah punya akun? "),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'Login disini',
                       style: TextStyle(
                         fontSize: 14,

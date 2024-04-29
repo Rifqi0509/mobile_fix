@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:pantau_pro/register/Home_page.dart';
 
 void main() {
-  runApp(riwayatapp());
+  runApp(const riwayatapp());
 }
 
 class riwayatapp extends StatelessWidget {
+  const riwayatapp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Riwayat Pengajuan'),
+          title: const Text('Riwayat Pengajuan'),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.push(
                 context,
@@ -23,7 +25,7 @@ class riwayatapp extends StatelessWidget {
             },
           ),
         ),
-        body: KunjunganCard(),
+        body: const KunjunganCard(),
       ),
     );
   }
@@ -50,6 +52,8 @@ class Kunjungan {
 }
 
 class KunjunganCard extends StatefulWidget {
+  const KunjunganCard({super.key});
+
   @override
   _KunjunganCardState createState() => _KunjunganCardState();
 }
@@ -111,7 +115,7 @@ class _KunjunganCardState extends State<KunjunganCard> {
               child: DataTable(
                 headingRowColor:
                     MaterialStateColor.resolveWith((states) => Colors.orange),
-                columns: [
+                columns: const [
                   DataColumn(
                       label: Text('No',
                           style: TextStyle(fontWeight: FontWeight.bold))),
@@ -149,11 +153,11 @@ class _KunjunganCardState extends State<KunjunganCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Filter berdasarkan tanggal:',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           ElevatedButton(
             onPressed: () => _selectDate(context),
             style: ElevatedButton.styleFrom(
@@ -206,19 +210,19 @@ class _KunjunganCardState extends State<KunjunganCard> {
         DataCell(Text(kunjungan.tujuan)),
         DataCell(
           Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: statusColor,
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(
               kunjungan.status,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),
         DataCell(
-          canRedeem ? Text(kunjungan.kodeUnik) : Text('-'),
+          canRedeem ? Text(kunjungan.kodeUnik) : const Text('-'),
         ),
       ]);
     }).toList();

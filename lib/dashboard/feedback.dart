@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyFeedbackApp());
+  runApp(const MyFeedbackApp());
 }
 
 class MyFeedbackApp extends StatelessWidget {
+  const MyFeedbackApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,25 +14,27 @@ class MyFeedbackApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FeedbackPage(),
+      home: const FeedbackPage(),
     );
   }
 }
 
 class FeedbackPage extends StatelessWidget {
+  const FeedbackPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feedback'),
+        title: const Text('Feedback'),
       ),
       backgroundColor: Colors.white, // Set background color to white
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Berikan Masukan Anda',
@@ -40,22 +44,22 @@ class FeedbackPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               maxLines: 5,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Pesan',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
                 _showFeedbackSentSnackbar(context);
                 // Navigate back to home page immediately
                 Navigator.pop(context);
               },
-              child: Text('Kirim'),
+              child: const Text('Kirim'),
             ),
           ],
         ),
@@ -65,7 +69,7 @@ class FeedbackPage extends StatelessWidget {
 
   void _showFeedbackSentSnackbar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Feedback telah terkirim!'),
         duration: Duration(seconds: 2),
       ),

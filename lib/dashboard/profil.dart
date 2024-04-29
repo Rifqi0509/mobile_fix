@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(EditProfilePage());
+  runApp(const EditProfilePage());
 }
 
 class EditProfilePage extends StatelessWidget {
+  const EditProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Edit Profile'),
+          title: const Text('Edit Profile'),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context); // Kembali ke halaman sebelumnya
             },
           ),
         ),
-        body: EditProfileForm(),
+        body: const EditProfileForm(),
       ),
     );
   }
 }
 
 class EditProfileForm extends StatefulWidget {
+  const EditProfileForm({super.key});
+
   @override
   _EditProfileFormState createState() => _EditProfileFormState();
 }
@@ -37,14 +41,14 @@ class _EditProfileFormState extends State<EditProfileForm> {
   String _telepon = '';
 
   // Simpan path gambar
-  String _imagePath =
+  final String _imagePath =
       'Asset/image/profil.jpg'; // Ganti dengan path gambar default Anda
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white, // Set latar belakang putih
-      padding: EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -64,12 +68,12 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 bottom: 0,
                 right: 0,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.camera_alt),
+                    icon: const Icon(Icons.camera_alt),
                     onPressed: () {
                       // Tambahkan logika untuk mengambil foto profil
                       print('Ambil foto profil');
@@ -79,50 +83,50 @@ class _EditProfileFormState extends State<EditProfileForm> {
               ),
             ],
           ),
-          SizedBox(height: 5.0), // Jarak antara foto profil dan teks
-          Text(
+          const SizedBox(height: 5.0), // Jarak antara foto profil dan teks
+          const Text(
             'Edit Photo Profile',
             style: TextStyle(
               fontSize: 14.0,
               color: Colors.blueAccent,
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           _buildTextFieldWithShadow('User Name', onChanged: (value) {
             setState(() {
               _username = value;
             });
           }),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           _buildTextFieldWithShadow('Email', onChanged: (value) {
             setState(() {
               _email = value;
             });
           }),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           _buildTextFieldWithShadow('Alamat', onChanged: (value) {
             setState(() {
               _alamat = value;
             });
           }),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           _buildTextFieldWithShadow('Nomor Telepon', onChanged: (value) {
             setState(() {
               _telepon = value;
             });
           }),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 15.0),
+                    padding: const EdgeInsets.symmetric(vertical: 15.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Simpan',
                     style: TextStyle(fontSize: 16.0),
                   ),
@@ -153,12 +157,12 @@ class _EditProfileFormState extends State<EditProfileForm> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 2,
-            offset: Offset(0, 1), // changes position of shadow
+            offset: const Offset(0, 1), // changes position of shadow
           ),
         ],
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: TextFormField(
           decoration: InputDecoration(
             labelText: labelText,
