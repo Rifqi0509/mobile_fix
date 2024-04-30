@@ -3,27 +3,67 @@ import 'package:flutter/material.dart';
 import 'package:pantau_pro/register/Home_page.dart';
 
 void main() {
-  runApp(const riwayatapp());
+  runApp(const RiwayatApp());
 }
 
-class riwayatapp extends StatelessWidget {
-  const riwayatapp({super.key});
+class RiwayatApp extends StatelessWidget {
+  const RiwayatApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Riwayat Pengajuan'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            },
+          titleSpacing: 0,
+          title: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                },
+                icon: Icon(Icons.arrow_back),
+              ),
+              const SizedBox(width: 8.0),
+              const Text('Riwayat Pengajuan'),
+            ],
           ),
+          actions: [
+            Container(
+              constraints: BoxConstraints(maxWidth: 200),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(width: 8.0),
+                  Icon(Icons.search, color: Colors.grey),
+                  const SizedBox(width: 8.0),
+                  Expanded(
+                    child: TextField(
+                      onChanged: (value) {},
+                      decoration: InputDecoration(
+                        hintText: 'Cari...',
+                        border: InputBorder.none,
+                        isDense: true,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         body: const KunjunganCard(),
       ),
@@ -33,26 +73,36 @@ class riwayatapp extends StatelessWidget {
 
 class Kunjungan {
   final int no;
+  final String nama;
+  final String alamat;
+  final String keperluan;
+  final String asalInstansi;
+  final String noHp;
   final String tanggal;
-  final String pihakYangDituju;
   final String departemen;
-  final String tujuan;
+  final String seksi;
   final String status;
-  final String kodeUnik;
+  final String ket;
+  final String kodeUndangan;
 
   Kunjungan({
     required this.no,
+    required this.nama,
+    required this.alamat,
+    required this.keperluan,
+    required this.asalInstansi,
+    required this.noHp,
     required this.tanggal,
-    required this.pihakYangDituju,
     required this.departemen,
-    required this.tujuan,
+    required this.seksi,
     required this.status,
-    required this.kodeUnik,
+    required this.ket,
+    required this.kodeUndangan,
   });
 }
 
 class KunjunganCard extends StatefulWidget {
-  const KunjunganCard({super.key});
+  const KunjunganCard({Key? key});
 
   @override
   _KunjunganCardState createState() => _KunjunganCardState();
@@ -60,45 +110,72 @@ class KunjunganCard extends StatefulWidget {
 
 class _KunjunganCardState extends State<KunjunganCard> {
   DateTime? _selectedDate;
+  late List<Kunjungan> filteredKunjunganList;
 
   final List<Kunjungan> kunjunganList = [
     Kunjungan(
       no: 1,
+      nama: 'Nama X',
+      alamat: 'Alamat X',
+      keperluan: 'Keperluan X',
+      asalInstansi: 'Instansi X',
+      noHp: '1234567890',
       tanggal: '2024-04-20',
-      pihakYangDituju: 'Company X',
       departemen: 'Sales',
-      tujuan: 'Pertemuan bisnis',
+      seksi: 'Seksi X',
       status: 'Disetujui',
-      kodeUnik: generateRandomCode(),
+      ket: 'Keterangan X',
+      kodeUndangan: generateRandomCode(),
     ),
     Kunjungan(
       no: 2,
+      nama: 'Nama Y',
+      alamat: 'Alamat Y',
+      keperluan: 'Keperluan Y',
+      asalInstansi: 'Instansi Y',
+      noHp: '0987654321',
       tanggal: '2024-04-22',
-      pihakYangDituju: 'Company Y',
       departemen: 'Marketing',
-      tujuan: 'Wawancara',
-      status: 'Menunggu Persetujuan',
-      kodeUnik: generateRandomCode(),
+      seksi: 'Seksi Y',
+      status: 'Disetujui',
+      ket: 'Keterangan Y',
+      kodeUndangan: generateRandomCode(),
     ),
     Kunjungan(
       no: 3,
+      nama: 'Nama Z',
+      alamat: 'Alamat Z',
+      keperluan: 'Keperluan Z',
+      asalInstansi: 'Instansi Z',
+      noHp: '1357924680',
       tanggal: '2024-04-23',
-      pihakYangDituju: 'Company Z',
       departemen: 'Human Resources',
-      tujuan: 'Kunjungan pribadi',
-      status: 'Disetujui',
-      kodeUnik: generateRandomCode(),
+      seksi: 'Seksi Z',
+      status: 'Ditolak',
+      ket: 'Keterangan Z',
+      kodeUndangan: '',
     ),
     Kunjungan(
       no: 4,
+      nama: 'Nama W',
+      alamat: 'Alamat W',
+      keperluan: 'Keperluan W',
+      asalInstansi: 'Instansi W',
+      noHp: '2468013579',
       tanggal: '2024-04-24',
-      pihakYangDituju: 'Company W',
       departemen: 'Training',
-      tujuan: 'Pelatihan',
+      seksi: 'Seksi W',
       status: 'Disetujui',
-      kodeUnik: generateRandomCode(),
+      ket: 'Keterangan W',
+      kodeUndangan: generateRandomCode(),
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredKunjunganList = kunjunganList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,22 +197,37 @@ class _KunjunganCardState extends State<KunjunganCard> {
                       label: Text('No',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   DataColumn(
+                      label: Text('Nama',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Alamat',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Keperluan',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Instansi Asal',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('No. HP',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
                       label: Text('Tanggal Kunjungan',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   DataColumn(
                       label: Text('Departemen',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   DataColumn(
-                      label: Text('Pihak yang Dituju',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Text('Tujuan Kunjungan',
+                      label: Text('Seksi',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   DataColumn(
                       label: Text('Status',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   DataColumn(
-                      label: Text('Kode Unik',
+                      label: Text('Keterangan',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Kode Undangan',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                 ],
                 rows: _buildDataRowList(),
@@ -162,13 +254,11 @@ class _KunjunganCardState extends State<KunjunganCard> {
             onPressed: () => _selectDate(context),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(5.0), // Adjust the value as needed
+                borderRadius: BorderRadius.circular(5.0),
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 10.0), // Adjust the value as needed
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
                 _selectedDate == null
                     ? 'Pilih Tanggal'
@@ -182,17 +272,19 @@ class _KunjunganCardState extends State<KunjunganCard> {
   }
 
   List<DataRow> _buildDataRowList() {
-    return kunjunganList
+    return filteredKunjunganList
         .where((kunjungan) =>
             _selectedDate == null ||
             kunjungan.tanggal == _selectedDate.toString().substring(0, 10))
         .map((kunjungan) {
       Color statusColor = Colors.black;
-      bool canRedeem = false; // Inisialisasi kode redeem
+      bool canRedeem = false;
+      String kodeUndangan = kunjungan.kodeUndangan;
 
       if (kunjungan.status == 'Disetujui') {
         statusColor = Colors.green;
-        canRedeem = true; // Jika disetujui, maka dapat redeem
+        canRedeem = true;
+        kodeUndangan = generateRandomCode();
       } else if (kunjungan.status == 'Menunggu Persetujuan') {
         statusColor = Colors.orange;
       } else if (kunjungan.status == 'Ditolak') {
@@ -203,11 +295,14 @@ class _KunjunganCardState extends State<KunjunganCard> {
 
       return DataRow(cells: [
         DataCell(Text(kunjungan.no.toString())),
+        DataCell(Text(kunjungan.nama)),
+        DataCell(Text(kunjungan.alamat)),
+        DataCell(Text(kunjungan.keperluan)),
+        DataCell(Text(kunjungan.asalInstansi)),
+        DataCell(Text(kunjungan.noHp)),
         DataCell(Text(kunjungan.tanggal)),
         DataCell(Text(kunjungan.departemen)),
-        DataCell(
-            Text('${kunjungan.pihakYangDituju} (${kunjungan.departemen})')),
-        DataCell(Text(kunjungan.tujuan)),
+        DataCell(Text(kunjungan.seksi)),
         DataCell(
           Container(
             padding: const EdgeInsets.all(8),
@@ -222,7 +317,10 @@ class _KunjunganCardState extends State<KunjunganCard> {
           ),
         ),
         DataCell(
-          canRedeem ? Text(kunjungan.kodeUnik) : const Text('-'),
+          Text(kunjungan.ket),
+        ),
+        DataCell(
+          canRedeem ? Text(kodeUndangan) : const Text('-'),
         ),
       ]);
     }).toList();

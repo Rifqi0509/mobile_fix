@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pantau_pro/dashboard/notifikasi.dart';
 import 'package:pantau_pro/dashboard/profil.dart';
 import 'package:pantau_pro/dashboard/survey.dart';
+import 'package:pantau_pro/register/login.dart';
 import 'package:pantau_pro/view/landing.dart';
 import 'package:pantau_pro/dashboard/kunjungan.dart';
 import 'package:pantau_pro/dashboard/feedback.dart';
@@ -20,22 +21,50 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding:
-                const EdgeInsets.fromLTRB(40, 30, 40, 0), // Adjust as needed
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: const BorderSide(
-                      color: Color.fromARGB(
-                          255, 255, 255, 255)), // Border color
+            padding: const EdgeInsets.fromLTRB(16, 30, 16, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Pantau Tamu Pro',
+                  style: TextStyle(fontSize: 24, fontFamily: 'Man'),
                 ),
-              ),
-              onChanged: (value) {
-                // Add function to update search results here
-              },
+                IconButton(
+                  onPressed: () {
+                    // Menampilkan Snackbar untuk konfirmasi logout
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Konfirmasi Logout'),
+                          content: Text('Apakah Anda yakin ingin keluar?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Batal'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // Logout dan pindahkan ke halaman login
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
+                              },
+                              child: Text('Ya'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: Icon(Icons.logout),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 20),
@@ -72,11 +101,13 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const KunjunganPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const KunjunganPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black, backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -91,11 +122,13 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SurveyApp()),
+                      MaterialPageRoute(
+                          builder: (context) => const SurveyApp()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black, backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -110,11 +143,13 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const FeedbackPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const FeedbackPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black, backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -129,11 +164,13 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const riwayatapp()),
+                      MaterialPageRoute(
+                          builder: (context) => const RiwayatApp()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black, backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),

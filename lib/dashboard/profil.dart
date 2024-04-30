@@ -12,7 +12,7 @@ class EditProfilePage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Edit Profile'),
+          title: const Text('Profile'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {

@@ -6,7 +6,7 @@ void main() {
 }
 
 class SurveyApp extends StatelessWidget {
-  const SurveyApp({super.key});
+  const SurveyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class SurveyApp extends StatelessWidget {
 }
 
 class SurveyPage extends StatefulWidget {
-  const SurveyPage({super.key});
+  const SurveyPage({Key? key}) : super(key: key);
 
   @override
   _SurveyPageState createState() => _SurveyPageState();
@@ -30,7 +30,21 @@ class _SurveyPageState extends State<SurveyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Survey Kepuasan Aplikasi'),
+        title: Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+              icon: Icon(Icons.arrow_back),
+            ),
+            const SizedBox(width: 8.0),
+            const Text('Survey Kepuasan'),
+          ],
+        ),
       ),
       body: Container(
         color: Colors.white,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pantau_pro/register/Home_page.dart';
+import 'package:pantau_pro/register/login.dart';
 import 'package:pantau_pro/register/register.dart';
-import 'package:pantau_pro/view/landing.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,18 +18,18 @@ class RegisterApp extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: SplashScreen(), // Mengatur SplashScreen sebagai layar awal
+      home: SplashScreen(), // Set SplashScreen as the initial screen
     );
   }
 }
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -56,11 +57,11 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
     _animationController.forward();
-    // Setelah selesai animasi, pindah ke layar berikutnya
+    // After animation finishes, move to the next screen
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const landingapp()),
+          MaterialPageRoute(builder: (_) => const LoginPage()),
         );
       }
     });
@@ -68,31 +69,47 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 153, 0),
-      body: Center(
+      body: Container(
+        height: screenHeight,
+        width: screenWidth,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF55552B), // Warna yang diinginkan
+              Color(
+                  0xFF55552B), // Warna yang diinginkan (jika ingin satu warna saja)
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 1.0],
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: const Text(
-                'Pantau Tamu Pro',
-                style: TextStyle(
-                  fontSize: 48,
-                  color: Colors.white,
-                  fontFamily: 'Man',
-                  fontWeight: FontWeight.bold,
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Image.asset(
+                    'Asset/image/pantau.png', // Replace 'your_image.png' with your image asset path
+                    width: screenWidth * 10,
+                    height: screenWidth * 10, // Adjust image width as needed
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 20), // Spacer
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: CircularProgressIndicator(
-                // Animasi loading horizontal
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-                backgroundColor: Colors.white.withOpacity(0.3),
+            SizedBox(height: 20),
+            Text(
+              'By Smart IT',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
               ),
             ),
           ],

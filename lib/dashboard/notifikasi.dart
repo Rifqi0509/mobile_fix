@@ -129,7 +129,7 @@ class NotificationHomePage extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const riwayatapp()),
+            MaterialPageRoute(builder: (context) => const RiwayatApp()),
           );
         },
       ),

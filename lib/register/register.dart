@@ -323,7 +323,10 @@ class _RegisterFormState extends State<RegisterForm> {
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  _register();
+                  // Memeriksa apakah semua input telah diisi dengan benar sebelum mendaftar
+                  if (_formKey.currentState!.validate()) {
+                    _register();
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
