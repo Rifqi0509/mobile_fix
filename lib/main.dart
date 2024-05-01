@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const LoginPage()),
+          MaterialPageRoute(builder: (_) => HomePage()),
         );
       }
     });
@@ -97,9 +97,9 @@ class _SplashScreenState extends State<SplashScreen>
                 child: FadeTransition(
                   opacity: _fadeAnimation,
                   child: Image.asset(
-                    'Asset/image/pantau.png', // Replace 'your_image.png' with your image asset path
-                    width: screenWidth * 10,
-                    height: screenWidth * 10, // Adjust image width as needed
+                    'Asset/image/putih.png', // Replace 'your_image.png' with your image asset path
+                    width: screenWidth * 4,
+                    height: screenWidth * 4, // Adjust image width as needed
                   ),
                 ),
               ),

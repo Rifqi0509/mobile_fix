@@ -333,6 +333,10 @@ class _RegisterFormState extends State<RegisterForm> {
                   shadowColor: Colors.black,
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        8), // Adjust the border radius here
+                  ),
                 ),
                 child: const Text(
                   'Register',

@@ -141,6 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                               elevation: 1, // Tambahkan elevasi untuk bayangan
                               padding: const EdgeInsets.symmetric(
                                   vertical: 12, horizontal: 40),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    8), // Adjust the border radius here
+                              ),
                             ),
                             child: const Text(
                               'Login',

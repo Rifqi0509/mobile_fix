@@ -30,40 +30,6 @@ class RiwayatApp extends StatelessWidget {
               const Text('Riwayat Pengajuan'),
             ],
           ),
-          actions: [
-            Container(
-              constraints: BoxConstraints(maxWidth: 200),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 8.0),
-                  Icon(Icons.search, color: Colors.grey),
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                    child: TextField(
-                      onChanged: (value) {},
-                      decoration: InputDecoration(
-                        hintText: 'Cari...',
-                        border: InputBorder.none,
-                        isDense: true,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
         ),
         body: const KunjunganCard(),
       ),
@@ -72,32 +38,30 @@ class RiwayatApp extends StatelessWidget {
 }
 
 class Kunjungan {
-  final int no;
+  final String kdUndangan;
   final String nama;
   final String alamat;
-  final String keperluan;
   final String asalInstansi;
   final String noHp;
-  final String tanggal;
+  final String keperluan;
   final String departemen;
   final String seksi;
+  final String tanggal;
   final String status;
   final String ket;
-  final String kodeUndangan;
 
   Kunjungan({
-    required this.no,
+    required this.kdUndangan,
     required this.nama,
     required this.alamat,
-    required this.keperluan,
     required this.asalInstansi,
     required this.noHp,
-    required this.tanggal,
+    required this.keperluan,
     required this.departemen,
     required this.seksi,
+    required this.tanggal,
     required this.status,
     required this.ket,
-    required this.kodeUndangan,
   });
 }
 
@@ -113,62 +77,7 @@ class _KunjunganCardState extends State<KunjunganCard> {
   late List<Kunjungan> filteredKunjunganList;
 
   final List<Kunjungan> kunjunganList = [
-    Kunjungan(
-      no: 1,
-      nama: 'Nama X',
-      alamat: 'Alamat X',
-      keperluan: 'Keperluan X',
-      asalInstansi: 'Instansi X',
-      noHp: '1234567890',
-      tanggal: '2024-04-20',
-      departemen: 'Sales',
-      seksi: 'Seksi X',
-      status: 'Disetujui',
-      ket: 'Keterangan X',
-      kodeUndangan: generateRandomCode(),
-    ),
-    Kunjungan(
-      no: 2,
-      nama: 'Nama Y',
-      alamat: 'Alamat Y',
-      keperluan: 'Keperluan Y',
-      asalInstansi: 'Instansi Y',
-      noHp: '0987654321',
-      tanggal: '2024-04-22',
-      departemen: 'Marketing',
-      seksi: 'Seksi Y',
-      status: 'Disetujui',
-      ket: 'Keterangan Y',
-      kodeUndangan: generateRandomCode(),
-    ),
-    Kunjungan(
-      no: 3,
-      nama: 'Nama Z',
-      alamat: 'Alamat Z',
-      keperluan: 'Keperluan Z',
-      asalInstansi: 'Instansi Z',
-      noHp: '1357924680',
-      tanggal: '2024-04-23',
-      departemen: 'Human Resources',
-      seksi: 'Seksi Z',
-      status: 'Ditolak',
-      ket: 'Keterangan Z',
-      kodeUndangan: '',
-    ),
-    Kunjungan(
-      no: 4,
-      nama: 'Nama W',
-      alamat: 'Alamat W',
-      keperluan: 'Keperluan W',
-      asalInstansi: 'Instansi W',
-      noHp: '2468013579',
-      tanggal: '2024-04-24',
-      departemen: 'Training',
-      seksi: 'Seksi W',
-      status: 'Disetujui',
-      ket: 'Keterangan W',
-      kodeUndangan: generateRandomCode(),
-    ),
+    // Your list of Kunjungan objects...
   ];
 
   @override
@@ -190,45 +99,77 @@ class _KunjunganCardState extends State<KunjunganCard> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
               child: DataTable(
-                headingRowColor:
-                    MaterialStateColor.resolveWith((states) => Colors.orange),
+                headingRowColor: MaterialStateColor.resolveWith(
+                  (states) => Color.fromRGBO(129, 129, 65, 1),
+                ),
+                dataRowHeight: 60.0,
                 columns: const [
                   DataColumn(
                       label: Text('No',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
                       label: Text('Nama',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
                       label: Text('Alamat',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
-                      label: Text('Keperluan',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Text('Instansi Asal',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                      label: Text('Asal Instansi',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
                       label: Text('No. HP',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
-                      label: Text('Tanggal Kunjungan',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                      label: Text('Keperluan',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
                       label: Text('Departemen',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
                       label: Text('Seksi',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
+                  DataColumn(
+                      label: Text('Tanggal Kunjungan',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
                       label: Text('Status',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Text('Keterangan',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                   DataColumn(
                       label: Text('Kode Undangan',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ))),
                 ],
                 rows: _buildDataRowList(),
               ),
@@ -278,13 +219,8 @@ class _KunjunganCardState extends State<KunjunganCard> {
             kunjungan.tanggal == _selectedDate.toString().substring(0, 10))
         .map((kunjungan) {
       Color statusColor = Colors.black;
-      bool canRedeem = false;
-      String kodeUndangan = kunjungan.kodeUndangan;
-
       if (kunjungan.status == 'Disetujui') {
         statusColor = Colors.green;
-        canRedeem = true;
-        kodeUndangan = generateRandomCode();
       } else if (kunjungan.status == 'Menunggu Persetujuan') {
         statusColor = Colors.orange;
       } else if (kunjungan.status == 'Ditolak') {
@@ -293,36 +229,33 @@ class _KunjunganCardState extends State<KunjunganCard> {
         statusColor = Colors.blue;
       }
 
-      return DataRow(cells: [
-        DataCell(Text(kunjungan.no.toString())),
-        DataCell(Text(kunjungan.nama)),
-        DataCell(Text(kunjungan.alamat)),
-        DataCell(Text(kunjungan.keperluan)),
-        DataCell(Text(kunjungan.asalInstansi)),
-        DataCell(Text(kunjungan.noHp)),
-        DataCell(Text(kunjungan.tanggal)),
-        DataCell(Text(kunjungan.departemen)),
-        DataCell(Text(kunjungan.seksi)),
-        DataCell(
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: statusColor,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Text(
-              kunjungan.status,
-              style: const TextStyle(color: Colors.white),
+      return DataRow(
+        cells: [
+          DataCell(Text(kunjungan.kdUndangan)),
+          DataCell(Text(kunjungan.nama)),
+          DataCell(Text(kunjungan.alamat)),
+          DataCell(Text(kunjungan.asalInstansi)),
+          DataCell(Text(kunjungan.noHp)),
+          DataCell(Text(kunjungan.keperluan)),
+          DataCell(Text(kunjungan.departemen)),
+          DataCell(Text(kunjungan.seksi)),
+          DataCell(Text(kunjungan.tanggal)),
+          DataCell(
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: statusColor,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                kunjungan.status,
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
           ),
-        ),
-        DataCell(
-          Text(kunjungan.ket),
-        ),
-        DataCell(
-          canRedeem ? Text(kodeUndangan) : const Text('-'),
-        ),
-      ]);
+          DataCell(Text(kunjungan.ket)),
+        ],
+      );
     }).toList();
   }
 
@@ -338,13 +271,5 @@ class _KunjunganCardState extends State<KunjunganCard> {
         _selectedDate = pickedDate;
       });
     }
-  }
-
-  static String generateRandomCode() {
-    final random = Random();
-    const length = 6;
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return String.fromCharCodes(Iterable.generate(
-        length, (_) => chars.codeUnitAt(random.nextInt(chars.length))));
   }
 }

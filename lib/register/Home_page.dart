@@ -17,81 +17,86 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 30, 16, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Pantau Tamu Pro',
-                  style: TextStyle(fontSize: 24, fontFamily: 'Man'),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // Menampilkan Snackbar untuk konfirmasi logout
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Konfirmasi Logout'),
-                          content: Text('Apakah Anda yakin ingin keluar?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text('Batal'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                // Logout dan pindahkan ke halaman login
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
-                                  ),
-                                );
-                              },
-                              child: Text('Ya'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  icon: Icon(Icons.logout),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Card(
-            child: Container(
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage(
-                      'Asset/image/background.jpg'), // Change with your image path
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(50),
-                child: Text(
-                  'Selamat datang di Pantau Tamu Pro!',
-                  style: TextStyle(
-                      fontSize: 24, color: Colors.white, fontFamily: 'Man'),
-                  textAlign: TextAlign.center,
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 30, 16, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    'Asset/image/hijau2.png', // Ganti dengan path gambar logo Anda
+                    width: 130, // Sesuaikan ukuran gambar sesuai keinginan Anda
+                    height: 50, // Sesuaikan ukuran gambar sesuai keinginan Anda
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      // Menampilkan Snackbar untuk konfirmasi logout
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Konfirmasi Logout'),
+                            content: Text('Apakah Anda yakin ingin keluar?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Batal'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Logout dan pindahkan ke halaman login
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginPage(),
+                                    ),
+                                  );
+                                },
+                                child: Text('Ya'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.logout),
+                  ),
+                ],
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: GridView.count(
+            const SizedBox(height: 20),
+            Card(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage(
+                        'Asset/image/background.jpg'), // Change with your image path
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(50),
+                  child: Text(
+                    'Selamat datang di Pantau Tamu Pro!',
+                    style: TextStyle(
+                        fontSize: 24, color: Colors.white, fontFamily: 'Man'),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            GridView.count(
+              physics:
+                  NeverScrollableScrollPhysics(), // Prevent GridView from scrolling
+              shrinkWrap:
+                  true, // Make GridView scrollable within SingleChildScrollView
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
@@ -183,8 +188,8 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
