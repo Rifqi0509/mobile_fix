@@ -17,8 +17,6 @@ class _KunjunganPageState extends State<KunjunganPage> {
   final TextEditingController _pihakController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
-  String _selectedDepartemen = '';
-  String _selectedSeksi = '';
   bool _namaIsFilled = true;
   bool _alamatIsFilled = true;
   bool _tujuanIsFilled = true;
@@ -26,25 +24,28 @@ class _KunjunganPageState extends State<KunjunganPage> {
   bool _kontakIsFilled = true;
   bool _pihakIsSelected = true;
 
-  final Map<String, List<String>> _departemenOptions = {
-    'Departemen': [
-      'keuangan',
-      'ketenagakerjaan',
-      'paud/tk',
-      'sd',
-      'smp',
-      'perencanaan'
-    ],
-  };
+  // Variabel untuk menyimpan nilai dropdown departemen dan seksi yang dipilih
+  String _selectedDepartemen = 'keuangan';
+  String _selectedSeksi = 'kurikulum/penilaian';
 
-  final Map<String, List<String>> _seksiOptions = {
-    'Seksi': [
-      'kurikulum/penilaian',
-      'sarana/prasarana',
-      'pendidik_sd',
-      'pendidik_smp'
-    ],
-  };
+  // List pilihan untuk departemen dan seksi
+  List<String> departemenOptions = [
+    'keuangan',
+    'ketenagakerjaan',
+    'paud/tk',
+    'sd',
+    'smp',
+    'perencanaan',
+    'lainnya'
+  ];
+
+  List<String> seksiOptions = [
+    'kurikulum/penilaian',
+    'sarana/prasarana',
+    'pendidik_sd',
+    'pendidik_smp',
+    'lainnya'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -127,25 +128,35 @@ class _KunjunganPageState extends State<KunjunganPage> {
                         isFilled: _kontakIsFilled,
                         keyboardType: TextInputType.phone,
                       ),
-                      _buildDropdownField(
+                      _buildDropdown(
                         labelText: 'Departemen *',
-                        items: _departemenOptions.keys.toList(),
-                        onItemSelected: (selectedDepartemen) {
+                        value: _selectedDepartemen,
+                        onChanged: (newValue) {
                           setState(() {
-                            _selectedDepartemen = selectedDepartemen!;
+                            _selectedDepartemen = newValue.toString();
                           });
                         },
-                        options: _departemenOptions,
+                        items: departemenOptions.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      _buildDropdownField(
+                      _buildDropdown(
                         labelText: 'Seksi *',
-                        items: _seksiOptions.keys.toList(),
-                        onItemSelected: (selectedSeksi) {
+                        value: _selectedSeksi,
+                        onChanged: (newValue) {
                           setState(() {
-                            _selectedSeksi = selectedSeksi!;
+                            _selectedSeksi = newValue.toString();
                           });
                         },
-                        options: _seksiOptions,
+                        items: seksiOptions.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
                       const SizedBox(height: 20),
                       const Text(
@@ -297,11 +308,11 @@ class _KunjunganPageState extends State<KunjunganPage> {
     );
   }
 
-  Widget _buildDropdownField({
+  Widget _buildDropdown({
     required String labelText,
-    required List<String> items,
-    required Function(String?) onItemSelected,
-    required Map<String, List<String>> options,
+    required String value,
+    required Function onChanged,
+    required List<DropdownMenuItem<String>> items,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -315,19 +326,12 @@ class _KunjunganPageState extends State<KunjunganPage> {
           ),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
-          value: labelText == 'Departemen *'
-              ? _selectedDepartemen
-              : _selectedSeksi,
-          onChanged: onItemSelected,
-          items: items.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
+        DropdownButtonFormField(
+          value: value,
+          onChanged: onChanged as void Function(String?)?,
+          items: items,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
             filled: true,
             fillColor: Colors.white,
           ),
@@ -343,8 +347,6 @@ class _KunjunganPageState extends State<KunjunganPage> {
     _tujuanIsFilled = _tujuanController.text.isNotEmpty;
     _perusahaanIsFilled = _perusahaanController.text.isNotEmpty;
     _kontakIsFilled = _kontakController.text.isNotEmpty;
-    _pihakIsSelected =
-        _selectedDepartemen.isNotEmpty && _selectedSeksi.isNotEmpty;
 
     setState(() {});
 
@@ -352,8 +354,7 @@ class _KunjunganPageState extends State<KunjunganPage> {
         _alamatIsFilled &&
         _tujuanIsFilled &&
         _perusahaanIsFilled &&
-        _kontakIsFilled &&
-        _pihakIsSelected;
+        _kontakIsFilled;
   }
 
   Future<void> _selectDate(BuildContext context) async {
