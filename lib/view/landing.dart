@@ -176,7 +176,7 @@ class MyHomePage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white, // Sesuaikan warna dengan tema
+                  backgroundColor: Colors.white, // Sesuaikan warna dengan tema
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                   shape: RoundedRectangleBorder(

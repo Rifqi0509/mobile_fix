@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:pantau_pro/register/Home_page.dart';
 
 void main() {
   runApp(FeedbackPage());
@@ -8,18 +11,26 @@ void main() {
 class FeedbackPage extends StatelessWidget {
   FeedbackPage({Key? key});
 
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
 
-  Future<void> sendFeedback(String email, String message) async {
-    var url = Uri.parse('http://localhost:8000/api/feedback_flutter');
-    var response =
-        await http.post(url, body: {'email': email, 'message': message});
+  Future<void> sendFeedback() async {
+    var url = Uri.parse('http://localhost:8000/api/feedback_flutter'); // Sesuaikan URL dengan endpoint Anda
+    var body = jsonEncode({
+      'keterangan': _messageController.text,
+    });
 
-    if (response.statusCode == 200) {
-      print('Feedback terkirim!');
-    } else {
-      print('Gagal mengirim feedback. Status code: ${response.statusCode}');
+    try {
+      var response = await http.post(url, body: body, headers: {
+        'Content-Type': 'application/json',
+      });
+
+      if (response.statusCode == 200) {
+        print('Feedback terkirim!');
+      } else {
+        print('Gagal mengirim feedback. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Terjadi kesalahan: $e');
     }
   }
 
@@ -47,14 +58,6 @@ class FeedbackPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Alamat Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            TextFormField(
               controller: _messageController,
               maxLines: 5,
               decoration: const InputDecoration(
@@ -65,9 +68,14 @@ class FeedbackPage extends StatelessWidget {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                sendFeedback(_emailController.text, _messageController.text);
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomePage()),
+                      );
+                sendFeedback(); // Panggil fungsi sendFeedback
                 _showFeedbackSentSnackbar(context);
-                Navigator.pop(context);
+                // Tidak perlu dipop navigator karena tidak ada navigasi lain yang didefinisikan di sini
               },
               child: const Text('Kirim'),
             ),
