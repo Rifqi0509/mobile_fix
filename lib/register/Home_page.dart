@@ -17,86 +17,81 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Image.asset(
+          'Asset/image/hijau2.png',
+          width: 100,
+          height: 50,
+        ),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () {
+                    // Logout dan pindahkan ke halaman login
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
+                  child: Text('Logout'),
+                ),
+              ),
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () {
+                    // Pindahkan ke halaman edit profile
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EditProfilePage(),
+                      ),
+                    );
+                  },
+                  child: Text('Edit Profile'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 30, 16, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'Asset/image/hijau2.png', // Ganti dengan path gambar logo Anda
-                    width: 130, // Sesuaikan ukuran gambar sesuai keinginan Anda
-                    height: 50, // Sesuaikan ukuran gambar sesuai keinginan Anda
+              child: Card(
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: const DecorationImage(
+                      image: AssetImage('Asset/image/background.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      // Menampilkan Snackbar untuk konfirmasi logout
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Konfirmasi Logout'),
-                            content: Text('Apakah Anda yakin ingin keluar?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Batal'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  // Logout dan pindahkan ke halaman login
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const LoginPage(),
-                                    ),
-                                  );
-                                },
-                                child: Text('Ya'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    icon: Icon(Icons.logout),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Card(
-              child: Container(
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage(
-                        'Asset/image/background.jpg'), // Change with your image path
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(50),
-                  child: Text(
-                    'Selamat datang di Pantau Tamu Pro!',
-                    style: TextStyle(
-                        fontSize: 24, color: Colors.white, fontFamily: 'Man'),
-                    textAlign: TextAlign.center,
+                  child: Padding(
+                    padding: const EdgeInsets.all(50),
+                    child: Text(
+                      'Selamat datang di Pantau Tamu Pro!',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontFamily: 'Man',
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
             GridView.count(
-              physics:
-                  NeverScrollableScrollPhysics(), // Prevent GridView from scrolling
-              shrinkWrap:
-                  true, // Make GridView scrollable within SingleChildScrollView
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
@@ -107,7 +102,8 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const KunjunganPage()),
+                        builder: (context) => const KunjunganPage(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -128,7 +124,8 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SurveyApp()),
+                        builder: (context) => const SurveyApp(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -149,7 +146,8 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const FeedbackPage()),
+                        builder: (context) => FeedbackPage(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -170,7 +168,8 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RiwayatApp()),
+                        builder: (context) => const RiwayatApp(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -202,19 +201,25 @@ class HomePage extends StatelessWidget {
             // Navigate to Home page
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const landingapp()),
+              MaterialPageRoute(
+                builder: (context) => const landingapp(),
+              ),
             );
           } else if (index == 1) {
             // Navigate to Notifications page
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const NotificationPage()),
+              MaterialPageRoute(
+                builder: (context) => const NotificationPage(),
+              ),
             );
           } else if (index == 2) {
             // Navigate to Profile page
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const EditProfilePage()),
+              MaterialPageRoute(
+                builder: (context) => const EditProfilePage(),
+              ),
             );
           }
         },
@@ -254,8 +259,8 @@ class CardWithIcon extends StatelessWidget {
       children: [
         Image.asset(
           imagePath,
-          width: 80, // Ubah ukuran ikon sesuai keinginan Anda
-          height: 80, // Ubah ukuran ikon sesuai keinginan Anda
+          width: 80,
+          height: 80,
         ),
         const SizedBox(height: 5),
         Text(

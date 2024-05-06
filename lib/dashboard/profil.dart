@@ -1,11 +1,20 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const EditProfilePage());
 }
 
-class EditProfilePage extends StatelessWidget {
-  const EditProfilePage({super.key});
+class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({Key? key}) : super(key: key);
+
+  @override
+  _EditProfilePageState createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  late Future<UserData> _userDataFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -20,157 +29,73 @@ class EditProfilePage extends StatelessWidget {
             },
           ),
         ),
-        body: const EditProfileForm(),
+        body: FutureBuilder<UserData>(
+          future: _userDataFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              UserData userData = snapshot.data!;
+              return EditProfileForm(userData: userData);
+            }
+          },
+        ),
       ),
     );
   }
 }
 
-class EditProfileForm extends StatefulWidget {
-  const EditProfileForm({super.key});
+class EditProfileForm extends StatelessWidget {
+  final UserData userData;
 
-  @override
-  _EditProfileFormState createState() => _EditProfileFormState();
-}
-
-class _EditProfileFormState extends State<EditProfileForm> {
-  // Simpan data dari form
-  String _username = '';
-  String _email = '';
-  String _alamat = '';
-  String _telepon = '';
-
-  // Simpan path gambar
-  final String _imagePath =
-      'Asset/image/profil.jpg'; // Ganti dengan path gambar default Anda
+  const EditProfileForm({Key? key, required this.userData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white, // Set latar belakang putih
       padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Stack(
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.grey[300],
-                child: Align(
-                  child: CircleAvatar(
-                    radius: 48,
-                    backgroundImage: AssetImage(_imagePath),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.camera_alt),
-                    onPressed: () {
-                      // Tambahkan logika untuk mengambil foto profil
-                      print('Ambil foto profil');
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 5.0), // Jarak antara foto profil dan teks
-          const Text(
-            'Edit Photo Profile',
-            style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.blueAccent,
-            ),
-          ),
+          Text('User Name: ${userData.username}'),
+          Text('Email: ${userData.email}'),
+          Text('Alamat: ${userData.alamat}'),
+          Text('Nomor Telepon: ${userData.telepon}'),
           const SizedBox(height: 20.0),
-          _buildTextFieldWithShadow('User Name', onChanged: (value) {
-            setState(() {
-              _username = value;
-            });
-          }),
-          const SizedBox(height: 15.0),
-          _buildTextFieldWithShadow('Email', onChanged: (value) {
-            setState(() {
-              _email = value;
-            });
-          }),
-          const SizedBox(height: 15.0),
-          _buildTextFieldWithShadow('Alamat', onChanged: (value) {
-            setState(() {
-              _alamat = value;
-            });
-          }),
-          const SizedBox(height: 15.0),
-          _buildTextFieldWithShadow('Nomor Telepon', onChanged: (value) {
-            setState(() {
-              _telepon = value;
-            });
-          }),
-          const SizedBox(height: 20.0),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 15.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: const Text(
-                    'Simpan',
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  onPressed: () {
-                    // Lakukan sesuatu dengan data yang disimpan
-                    print('User Name: $_username');
-                    print('Email: $_email');
-                    print('Alamat: $_alamat');
-                    print('Nomor Telepon: $_telepon');
-                  },
-                ),
-              ),
-            ],
+          ElevatedButton(
+            onPressed: () {
+              // Tambahkan logika untuk menyimpan data
+              print('Data saved!');
+            },
+            child: const Text('Simpan'),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildTextFieldWithShadow(String labelText,
-      {ValueChanged<String>? onChanged}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 2,
-            offset: const Offset(0, 1), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextFormField(
-          decoration: InputDecoration(
-            labelText: labelText,
-            border: InputBorder.none,
-          ),
-          onChanged: onChanged,
-        ),
-      ),
+class UserData {
+  final String username;
+  final String email;
+  final String alamat;
+  final String telepon;
+
+  UserData({
+    required this.username,
+    required this.email,
+    required this.alamat,
+    required this.telepon,
+  });
+
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return UserData(
+      username: json['username'],
+      email: json['email'],
+      alamat: json['alamat'],
+      telepon: json['telepon'],
     );
   }
 }

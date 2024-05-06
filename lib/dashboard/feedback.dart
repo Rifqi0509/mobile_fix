@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
-  runApp(const MyFeedbackApp());
-}
-
-class MyFeedbackApp extends StatelessWidget {
-  const MyFeedbackApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Feedback App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const FeedbackPage(),
-    );
-  }
+  runApp(FeedbackPage());
 }
 
 class FeedbackPage extends StatelessWidget {
-  const FeedbackPage({super.key});
+  FeedbackPage({Key? key});
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+
+  Future<void> sendFeedback(String email, String message) async {
+    var url = Uri.parse('http://localhost:8000/api/feedback_flutter');
+    var response =
+        await http.post(url, body: {'email': email, 'message': message});
+
+    if (response.statusCode == 200) {
+      print('Feedback terkirim!');
+    } else {
+      print('Gagal mengirim feedback. Status code: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,15 @@ class FeedbackPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             TextFormField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                labelText: 'Alamat Email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            TextFormField(
+              controller: _messageController,
               maxLines: 5,
               decoration: const InputDecoration(
                 labelText: 'Pesan',
@@ -55,8 +65,8 @@ class FeedbackPage extends StatelessWidget {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
+                sendFeedback(_emailController.text, _messageController.text);
                 _showFeedbackSentSnackbar(context);
-                // Navigate back to home page immediately
                 Navigator.pop(context);
               },
               child: const Text('Kirim'),
