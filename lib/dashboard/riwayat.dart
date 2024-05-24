@@ -1,6 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:pantau_pro/register/Home_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const RiwayatApp());
@@ -19,10 +19,7 @@ class RiwayatApp extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
+                  Navigator.pop(context);
                 },
                 icon: Icon(Icons.arrow_back),
               ),
@@ -47,6 +44,7 @@ class Kunjungan {
   final String departemen;
   final String seksi;
   final String tanggal;
+  final String jam;
   final String status;
   final String ket;
 
@@ -60,9 +58,27 @@ class Kunjungan {
     required this.departemen,
     required this.seksi,
     required this.tanggal,
+    required this.jam,
     required this.status,
     required this.ket,
   });
+
+  factory Kunjungan.fromJson(Map<String, dynamic> json) {
+    return Kunjungan(
+      kdUndangan: json['kd_undangan'] ?? "",
+      nama: json['nama'],
+      alamat: json['alamat'],
+      asalInstansi: json['asal_instansi'],
+      noHp: json['no_hp'],
+      keperluan: json['keperluan'],
+      departemen: json['departemen'],
+      seksi: json['seksi'],
+      tanggal: json['tanggal'],
+      jam: json['jam'],
+      status: json['status'],
+      ket: json['ket'],
+    );
+  }
 }
 
 class KunjunganCard extends StatefulWidget {
@@ -74,16 +90,29 @@ class KunjunganCard extends StatefulWidget {
 
 class _KunjunganCardState extends State<KunjunganCard> {
   DateTime? _selectedDate;
-  late List<Kunjungan> filteredKunjunganList;
-
-  final List<Kunjungan> kunjunganList = [
-    // Your list of Kunjungan objects...
-  ];
+  late List<Kunjungan> filteredKunjunganList = [];
+  late List<Kunjungan> kunjunganList = [];
 
   @override
   void initState() {
     super.initState();
-    filteredKunjunganList = kunjunganList;
+    fetchKunjungan();
+  }
+
+  Future<void> fetchKunjungan() async {
+    final response =
+        await http.get(Uri.parse('http://127.0.0.1:8000/api/vip_flutter'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> kunjunganJson = json.decode(response.body);
+      setState(() {
+        kunjunganList =
+            kunjunganJson.map((json) => Kunjungan.fromJson(json)).toList();
+        filteredKunjunganList = kunjunganList;
+      });
+    } else {
+      throw Exception('Failed to load kunjungan');
+    }
   }
 
   @override
@@ -97,79 +126,121 @@ class _KunjunganCardState extends State<KunjunganCard> {
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: DataTable(
                 headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => Color.fromRGBO(129, 129, 65, 1),
+                  (states) => const Color.fromRGBO(129, 129, 65, 1),
                 ),
                 dataRowHeight: 60.0,
                 columns: const [
                   DataColumn(
-                      label: Text('No',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'No',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Nama',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Nama',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Alamat',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Alamat',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Asal Instansi',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Asal Instansi',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('No. HP',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'No. HP',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Keperluan',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Keperluan',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Departemen',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Departemen',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Seksi',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Seksi',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Tanggal Kunjungan',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Tanggal Kunjungan',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Status',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Jam',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text('Kode Undangan',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ))),
+                    label: Text(
+                      'Status',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Kode Undangan',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ],
                 rows: _buildDataRowList(),
               ),
@@ -217,7 +288,12 @@ class _KunjunganCardState extends State<KunjunganCard> {
         .where((kunjungan) =>
             _selectedDate == null ||
             kunjungan.tanggal == _selectedDate.toString().substring(0, 10))
-        .map((kunjungan) {
+        .toList()
+        .asMap()
+        .entries
+        .map((entry) {
+      int index = entry.key + 1;
+      Kunjungan kunjungan = entry.value;
       Color statusColor = Colors.black;
       if (kunjungan.status == 'Disetujui') {
         statusColor = Colors.green;
@@ -231,7 +307,7 @@ class _KunjunganCardState extends State<KunjunganCard> {
 
       return DataRow(
         cells: [
-          DataCell(Text(kunjungan.kdUndangan)),
+          DataCell(Text(index.toString())), // Display index in the "No" column
           DataCell(Text(kunjungan.nama)),
           DataCell(Text(kunjungan.alamat)),
           DataCell(Text(kunjungan.asalInstansi)),
@@ -240,6 +316,7 @@ class _KunjunganCardState extends State<KunjunganCard> {
           DataCell(Text(kunjungan.departemen)),
           DataCell(Text(kunjungan.seksi)),
           DataCell(Text(kunjungan.tanggal)),
+          DataCell(Text(kunjungan.jam)),
           DataCell(
             Container(
               padding: const EdgeInsets.all(8),
@@ -253,7 +330,8 @@ class _KunjunganCardState extends State<KunjunganCard> {
               ),
             ),
           ),
-          DataCell(Text(kunjungan.ket)),
+          DataCell(Text(
+              kunjungan.kdUndangan)), // Display kdUndangan in the last column
         ],
       );
     }).toList();
