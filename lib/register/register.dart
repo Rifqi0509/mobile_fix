@@ -224,6 +224,9 @@ class _RegisterFormState extends State<RegisterForm> {
                   if (value!.isEmpty) {
                     return 'Email tidak boleh kosong';
                   }
+                  if (!value.contains('@gmail.com')) {
+                    return 'Email harus menggunakan domain @gmail.com';
+                  }
                   return null;
                 },
               ),
@@ -304,6 +307,9 @@ class _RegisterFormState extends State<RegisterForm> {
                   if (value!.isEmpty) {
                     return 'Nomor Telepon tidak boleh kosong';
                   }
+                  if (value.length != 12 || !value.startsWith('08')) {
+                    return 'Nomor Telepon harus berjumlah 12 dan dimulai dengan 08';
+                  }
                   return null;
                 },
               ),
@@ -378,18 +384,5 @@ class _RegisterFormState extends State<RegisterForm> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _namaController.dispose();
-    _alamatController.dispose();
-    _teleponController.dispose();
-    _tanggalLahirController.dispose();
-    super.dispose();
   }
 }

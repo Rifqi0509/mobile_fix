@@ -7,7 +7,8 @@ import 'package:pantau_pro/register/login.dart';
 import 'package:pantau_pro/dashboard/kunjungan.dart';
 import 'package:pantau_pro/dashboard/feedback.dart';
 import 'package:pantau_pro/dashboard/riwayat.dart';
-import 'package:pantau_pro/view/pageview.dart';
+import 'package:pantau_pro/view/logintutorial.dart';
+import 'dart:async';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,6 +19,39 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  final PageController _pageController = PageController();
+  late Timer _timer;
+
+  final List<String> _imagePaths = [
+    'Asset/image/12.png',
+    'Asset/image/13.png',
+    'Asset/image/14.png',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+      if (_pageController.hasClients) {
+        int nextPage = _pageController.page!.round() + 1;
+        if (nextPage == _imagePaths.length) {
+          nextPage = 0;
+        }
+        _pageController.animateToPage(
+          nextPage,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +74,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(Icons.account_circle),
-              title: Text('Profil'),
+              title: Text('Edit Profile'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -79,7 +113,8 @@ class _HomePageState extends State<HomePage> {
               title: Text('Pengaturan'),
               children: <Widget>[
                 ListTile(
-                  title: Text('Logout'),
+                  leading: Icon(Icons.logout),
+                  title: Text('Keluar'),
                   onTap: () {
                     showDialog(
                       context: context,
@@ -114,32 +149,60 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            ListTile(
+            ExpansionTile(
               leading: Icon(Icons.help),
               title: Text('Bantuan'),
-              onTap: () {
-                // Action when Help is tapped
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PageViewApp(),
-                  ),
-                );
-              },
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.note_add), // Tambahkan ikon di sini
+                  title: Text('Membuat Kunjungan'),
+                  onTap: () {
+                    // Action when Tutorial Login is tapped
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PageViewApp(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.info), // Tambahkan ikon di sini
+                  title: Text('Tentang Pantau Tamu Pro'),
+                  onTap: () {
+                    // Action when other help page is tapped
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PageViewApp(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
       ),
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white, // Set the background color to white
+        backgroundColor: const Color.fromARGB(255, 131, 189, 237),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF4FC3F7), Color(0xFF81D4FA)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ), // Set the background color to white
         title: Image.asset(
-          'Asset/image/hijau2.png',
+          'Asset/image/putih1.png',
           width: 100,
           height: 50,
         ),
         iconTheme:
-            IconThemeData(color: Colors.black), // Set the icon color to black
+            IconThemeData(color: Colors.white), // Set the icon color to black
         actions: [
           IconButton(
             icon: Icon(Icons.notifications),
@@ -172,33 +235,26 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 30, 16, 0),
-              child: Card(
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: const DecorationImage(
-                      image: AssetImage('Asset/image/background.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(50),
-                    child: Text(
-                      'Selamat datang di Pantau Tamu Pro!',
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontFamily: 'Man',
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+            SizedBox(
+              height: 200,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: _imagePaths.length,
+                    itemBuilder: (context, index) {
+                      return Image.asset(
+                        _imagePaths[index],
+                        fit: BoxFit.cover,
+                      );
+                    },
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             GridView.count(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -218,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color.fromARGB(255, 169, 229, 255),
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -240,7 +296,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color.fromARGB(255, 169, 229, 255),
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -262,7 +318,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color.fromARGB(255, 169, 229, 255),
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -284,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color.fromARGB(255, 169, 229, 255),
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -302,7 +358,7 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: Colors.white,
+          canvasColor: const Color.fromARGB(255, 255, 255, 255),
           primaryColor: Colors.blue, // warna ikon saat aktif
           textTheme: Theme.of(context).textTheme.copyWith(
                 caption: TextStyle(
@@ -323,7 +379,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             } else if (index == 1) {
-// Show Popup Menu
+              // Show Popup Menu
               showMenu(
                 context: context,
                 position: RelativeRect.fromLTRB(
@@ -371,7 +427,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
-// Tambahkan item-item baru di sini
+                  // Tambahkan item-item baru di sini
                   PopupMenuItem(
                     child: ListTile(
                       leading: Icon(Icons.feedback),
@@ -414,7 +470,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const EditProfileApp(), // Gantilah dengan halaman profil Anda
+                                    EditProfilePage(), // Gantilah dengan halaman profil Anda
                               ),
                             );
                           },
@@ -466,7 +522,7 @@ class _HomePageState extends State<HomePage> {
                       leading: Icon(Icons.help),
                       title: Text('Bantuan'),
                       onTap: () {
-// Action when Help is tapped
+                        // Action when Help is tapped
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -479,7 +535,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               );
             } else if (index == 2) {
-// Navigate to Profile page
+              // Navigate to Profile page
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -488,16 +544,27 @@ class _HomePageState extends State<HomePage> {
               );
             }
           },
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(Icons.dashboard),
-              label: 'dashboard',
+              label: 'Dashboard',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.rocket_launch), // Use a unique icon here
+              icon: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.rocket_launch,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
               label: 'Menu',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',
             ),

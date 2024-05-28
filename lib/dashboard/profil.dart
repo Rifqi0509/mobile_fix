@@ -1,189 +1,148 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
-  runApp(const EditProfileApp());
+  runApp(const EditProfilePage());
 }
 
-class EditProfileApp extends StatelessWidget {
-  const EditProfileApp({Key? key}) : super(key: key);
+class EditProfilePage extends StatelessWidget {
+  const EditProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const EditProfilePage(),
-    );
-  }
-}
-
-class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
-
-  @override
-  _EditProfilePageState createState() => _EditProfilePageState();
-}
-
-class _EditProfilePageState extends State<EditProfilePage> {
-  late UserData _userData;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    // Panggil method untuk mengambil data pengguna dari backend saat halaman pertama kali dibuat
-    _getUserData();
-  }
-
-  void _getUserData() async {
-    try {
-      // Lakukan request GET ke endpoint API Laravel
-      final response =
-          await http.get(Uri.parse('http://127.0.0.1:8000/api/user_flutter'));
-
-      // Periksa status code dari response
-      if (response.statusCode == 200) {
-        final userData = json.decode(response.body)['user'];
-        setState(() {
-          _userData = UserData(
-            username: userData['username'],
-            email: userData['email'],
-            alamat: userData['alamat'],
-            telepon: userData['telepon'],
-          );
-        });
-      } else {
-        throw Exception('Failed to load user data');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
-  void _saveUserData(UserData userData) {
-    // Implementasi logika untuk menyimpan data ke backend
-    // Misalnya dengan method POST ke endpoint yang sesuai di backend
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Data saved!')),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
-          },
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Profile'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Go back to the previous screen
+            },
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: EditProfileForm(
-          userData: _userData,
-          onSave: _saveUserData,
-        ),
+        body: const EditProfileForm(),
       ),
     );
   }
 }
 
 class EditProfileForm extends StatefulWidget {
-  final UserData userData;
-  final void Function(UserData) onSave;
-
-  const EditProfileForm({
-    Key? key,
-    required this.userData,
-    required this.onSave,
-  }) : super(key: key);
+  const EditProfileForm({Key? key}) : super(key: key);
 
   @override
   _EditProfileFormState createState() => _EditProfileFormState();
 }
 
 class _EditProfileFormState extends State<EditProfileForm> {
-  final _formKey = GlobalKey<FormState>();
-  late String _username;
-  late String _email;
-  late String _alamat;
-  late String _telepon;
+  late TextEditingController _usernameController;
+  late TextEditingController _namaController;
+  late TextEditingController _emailController;
+  late TextEditingController _addressController;
+  late TextEditingController _phoneNumberController;
 
   @override
   void initState() {
     super.initState();
-    _username = widget.userData.username;
-    _email = widget.userData.email;
-    _alamat = widget.userData.alamat;
-    _telepon = widget.userData.telepon;
+    _usernameController = TextEditingController();
+    _namaController = TextEditingController();
+    _emailController = TextEditingController();
+    _addressController = TextEditingController();
+    _phoneNumberController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _namaController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    _phoneNumberController.dispose();
+    super.dispose();
+  }
+
+  void _editProfilePicture() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Take a picture'),
+              onTap: () {
+                // Handle taking a new picture
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Pilih Foto Dari Galeri'),
+              onTap: () {
+                // Handle picking from gallery
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
+    return Container(
+      padding: const EdgeInsets.all(20.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          TextFormField(
-            initialValue: _username,
+          const CircleAvatar(
+            radius: 50,
+            backgroundImage: NetworkImage(
+                'https://via.placeholder.com/150'), // Replace with your image URL or asset
+          ),
+          const SizedBox(height: 10.0),
+          TextButton(
+            onPressed: _editProfilePicture,
+            child: const Text(
+              'Edit Profile',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          TextField(
+            controller: _usernameController,
             decoration: const InputDecoration(labelText: 'User Name'),
-            onSaved: (value) => _username = value!,
           ),
-          const SizedBox(height: 20.0),
-          TextFormField(
-            initialValue: _email,
+          TextField(
+            controller: _namaController,
+            decoration: const InputDecoration(labelText: 'Nama'),
+          ),
+          TextField(
+            controller: _emailController,
             decoration: const InputDecoration(labelText: 'Email'),
-            onSaved: (value) => _email = value!,
           ),
-          const SizedBox(height: 20.0),
-          TextFormField(
-            initialValue: _alamat,
+          TextField(
+            controller: _addressController,
             decoration: const InputDecoration(labelText: 'Alamat'),
-            onSaved: (value) => _alamat = value!,
           ),
-          const SizedBox(height: 20.0),
-          TextFormField(
-            initialValue: _telepon,
+          TextField(
+            controller: _phoneNumberController,
             decoration: const InputDecoration(labelText: 'Nomor Telepon'),
-            onSaved: (value) => _telepon = value!,
           ),
           const SizedBox(height: 20.0),
           ElevatedButton(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                UserData updatedUserData = UserData(
-                  username: _username,
-                  email: _email,
-                  alamat: _alamat,
-                  telepon: _telepon,
-                );
-                widget.onSave(updatedUserData);
-              }
+              // Add logic to save data
+              print('Data saved!');
             },
-            child: const Text('Simpan'),
+            child: const Text('Save'),
           ),
         ],
       ),
     );
   }
-}
-
-class UserData {
-  final String username;
-  final String email;
-  final String alamat;
-  final String telepon;
-
-  UserData({
-    required this.username,
-    required this.email,
-    required this.alamat,
-    required this.telepon,
-  });
 }
