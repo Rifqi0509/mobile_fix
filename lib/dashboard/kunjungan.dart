@@ -1,7 +1,8 @@
-import 'package:pantau_pro/register/Home_page.dart';
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:pantau_pro/register/Home_page.dart';
 
 class KunjunganPage extends StatefulWidget {
   const KunjunganPage({Key? key}) : super(key: key);
@@ -40,6 +41,21 @@ class _KunjunganPageState extends State<KunjunganPage> {
     'pendidik_smp',
     'lainnya'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _namaController.text = prefs.getString('name') ?? '';
+      _alamatController.text = prefs.getString('alamat') ?? '';
+      _kontakController.text = prefs.getString('no_telepon') ?? '';
+    });
+  }
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {

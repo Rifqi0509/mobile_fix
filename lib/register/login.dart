@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pantau_pro/register/register.dart';
 import 'package:pantau_pro/register/Home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginApp extends StatelessWidget {
   const LoginApp({Key? key});
@@ -32,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible = false;
 
   Future<void> _login() async {
-    // Memeriksa apakah email atau password kosong
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -45,24 +47,56 @@ class _LoginPageState extends State<LoginPage> {
 
     const String url = 'http://localhost:8000/api/login_flutter';
 
-    final response = await http.post(
-      Uri.parse(url),
-      body: {
-        'email': _emailController.text,
-        'password': _passwordController.text,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': _emailController.text,
+          'password': _passwordController.text,
+        }),
       );
-    } else {
-      print('Failed to authenticate: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseBody = jsonDecode(response.body);
+        final user = responseBody['user'];
+
+        if (user != null) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('id', user['id'].toString());
+          await prefs.setString('username', user['username'].toString());
+          await prefs.setString('name', user['name'].toString());
+          await prefs.setString('email', user['email'].toString());
+          await prefs.setString('alamat', user['alamat'].toString());
+          await prefs.setString('no_telepon', user['no_telepon'].toString());
+          await prefs.setString(
+              'tanggal_lahir', user['tanggal_lahir'].toString());
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to retrieve user data.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Email atau password salah.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      print('Terjadi kesalahan: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email atau password salah.'),
+        SnackBar(
+          content: Text('Terjadi kesalahan: $e'),
           backgroundColor: Colors.red,
         ),
       );
