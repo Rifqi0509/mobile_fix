@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 void main() {
   runApp(const RiwayatApp());
 }
@@ -37,46 +39,28 @@ class RiwayatApp extends StatelessWidget {
 class Kunjungan {
   final String kdUndangan;
   final String nama;
-  final String alamat;
-  final String asalInstansi;
-  final String noHp;
   final String keperluan;
-  final String departemen;
-  final String seksi;
   final String tanggal;
   final String jam;
   final String status;
-  final String ket;
 
   Kunjungan({
     required this.kdUndangan,
     required this.nama,
-    required this.alamat,
-    required this.asalInstansi,
-    required this.noHp,
     required this.keperluan,
-    required this.departemen,
-    required this.seksi,
     required this.tanggal,
     required this.jam,
     required this.status,
-    required this.ket,
   });
 
   factory Kunjungan.fromJson(Map<String, dynamic> json) {
     return Kunjungan(
       kdUndangan: json['kd_undangan'] ?? "",
       nama: json['nama'],
-      alamat: json['alamat'],
-      asalInstansi: json['asal_instansi'],
-      noHp: json['no_hp'],
       keperluan: json['keperluan'],
-      departemen: json['departemen'],
-      seksi: json['seksi'],
       tanggal: json['tanggal'],
       jam: json['jam'],
       status: json['status'],
-      ket: json['ket'],
     );
   }
 }
@@ -90,18 +74,33 @@ class KunjunganCard extends StatefulWidget {
 
 class _KunjunganCardState extends State<KunjunganCard> {
   DateTime? _selectedDate;
+
   late List<Kunjungan> filteredKunjunganList = [];
   late List<Kunjungan> kunjunganList = [];
+
+  late String namaId = '';
 
   @override
   void initState() {
     super.initState();
-    fetchKunjungan();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    await _loadUserData();
+    await fetchKunjungan();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    namaId = prefs.getString('name') ??
+        ''; // Dapatkan nilai 'name' dari SharedPreferences
+    print(namaId); // Cetak nilai 'name'
   }
 
   Future<void> fetchKunjungan() async {
-    final response =
-        await http.get(Uri.parse('http://127.0.0.1:8000/api/vip_flutter'));
+    final response = await http
+        .get(Uri.parse('http://127.0.0.1:8000/api/vip_flutter/$namaId'));
 
     if (response.statusCode == 200) {
       final List<dynamic> kunjunganJson = json.decode(response.body);
@@ -129,7 +128,7 @@ class _KunjunganCardState extends State<KunjunganCard> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: DataTable(
                 headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => const Color.fromARGB(255, 252, 170, 6),
+                  (states) => const Color.fromRGBO(129, 129, 65, 1),
                 ),
                 dataRowHeight: 60.0,
                 columns: const [
@@ -153,52 +152,7 @@ class _KunjunganCardState extends State<KunjunganCard> {
                   ),
                   DataColumn(
                     label: Text(
-                      'Alamat',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Asal Instansi',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'No. HP',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
                       'Keperluan',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Departemen',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Seksi',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -295,13 +249,13 @@ class _KunjunganCardState extends State<KunjunganCard> {
       int index = entry.key + 1;
       Kunjungan kunjungan = entry.value;
       Color statusColor = Colors.black;
-      if (kunjungan.status == 'Approved') {
+      if (kunjungan.status == 'Disetujui') {
         statusColor = Colors.green;
-      } else if (kunjungan.status == 'pending') {
+      } else if (kunjungan.status == 'Menunggu Persetujuan') {
         statusColor = Colors.orange;
-      } else if (kunjungan.status == 'Rejected') {
+      } else if (kunjungan.status == 'Ditolak') {
         statusColor = Colors.red;
-      } else if (kunjungan.status == 'Processed') {
+      } else if (kunjungan.status == 'Selesai') {
         statusColor = Colors.blue;
       }
 
@@ -309,12 +263,7 @@ class _KunjunganCardState extends State<KunjunganCard> {
         cells: [
           DataCell(Text(index.toString())), // Display index in the "No" column
           DataCell(Text(kunjungan.nama)),
-          DataCell(Text(kunjungan.alamat)),
-          DataCell(Text(kunjungan.asalInstansi)),
-          DataCell(Text(kunjungan.noHp)),
           DataCell(Text(kunjungan.keperluan)),
-          DataCell(Text(kunjungan.departemen)),
-          DataCell(Text(kunjungan.seksi)),
           DataCell(Text(kunjungan.tanggal)),
           DataCell(Text(kunjungan.jam)),
           DataCell(
