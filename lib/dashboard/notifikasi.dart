@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-
-import 'package:pantau_pro/dashboard/riwayat.dart';
 import 'package:pantau_pro/register/Home_page.dart';
 
 void main() {
@@ -9,140 +6,108 @@ void main() {
 }
 
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
+  const NotificationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> notifications = [
-      {
-        'status': 'Disetujui',
-        'code': generateRandomCode(),
-        'date': DateTime(2024, 4, 25)
-      },
-      {'status': 'Ditolak', 'date': DateTime(2024, 4, 24)},
-      {
-        'status': 'Disetujui',
-        'code': generateRandomCode(),
-        'date': DateTime(2024, 4, 23)
-      },
-      {'status': 'Ditolak', 'date': DateTime(2024, 4, 22)},
-      {
-        'status': 'Disetujui',
-        'code': generateRandomCode(),
-        'date': DateTime(2024, 4, 21)
-      },
-    ]; // Contoh daftar notifikasi
-
-    // Mengurutkan notifikasi berdasarkan tanggal (dari yang terbaru ke yang terlama)
-    notifications.sort((a, b) => b['date'].compareTo(a['date']));
-
     return MaterialApp(
       title: 'Notification Page',
       theme: ThemeData(
         primaryColor: Colors.blueGrey[900],
         hintColor: Colors.blueGrey[900],
         textTheme: const TextTheme(
-          titleLarge: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87),
-          titleMedium: TextStyle(fontSize: 16.0, color: Colors.black87),
-          bodyLarge: TextStyle(fontSize: 14.0, color: Colors.black54),
+          headline6: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+          subtitle1: TextStyle(fontSize: 16.0, color: Colors.black87),
+          bodyText2: TextStyle(fontSize: 14.0, color: Colors.black54),
         ),
       ),
-      home: NotificationHomePage(notifications: notifications),
+      home: const NotificationHomePage(),
     );
   }
 }
 
 class NotificationHomePage extends StatelessWidget {
-  final List<Map<String, dynamic>> notifications;
-
-  const NotificationHomePage({super.key, required this.notifications});
+  const NotificationHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifikasi'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          },
-        ),
-      ),
-      body: ListView.builder(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: 8.0, horizontal: 16.0), // Mengurangi padding
-            child: SizedBox(
-              width: double.infinity,
-              child: _buildNotificationItem(context, notifications[index]),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildNotificationItem(
-      BuildContext context, Map<String, dynamic> notification) {
-    String status = notification['status']
-        .toLowerCase(); // Mengonversi status menjadi huruf kecil
-    String? code = notification['code'];
-
-    Color notificationColor = status == 'disetujui'
-        ? Colors.green
-        : Colors.red; // Perbaikan perbandingan status
-
-    String formattedDate =
-        '${notification['date'].day}/${notification['date'].month}/${notification['date'].year}'; // Format tanggal notifikasi
-
-    return Container(
-      decoration: BoxDecoration(
-        border:
-            Border.all(color: Colors.grey[300]!), // Menambah border berwarna
-        borderRadius: BorderRadius.circular(10), // Mengubah border-radius
-      ),
-      padding: const EdgeInsets.all(16.0), // Mengubah padding
-      child: ListTile(
-        title: Text(
-          'Permohonan ${status.toUpperCase()}', // Mengubah status menjadi huruf besar
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: notificationColor,
-          ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        titleSpacing: 0,
+        title: Row(
           children: [
-            code != null ? Text('Kode Unik: $code') : const SizedBox(),
-            Text('Tanggal: $formattedDate'),
+            IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+              icon: Icon(Icons.arrow_back),
+            ),
+            const SizedBox(width: 8.0),
+            const Text('Notifikasi'),
           ],
         ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RiwayatApp()),
-          );
-        },
+      ),
+      body: ListView(
+        children: <Widget>[
+          NotificationItem(
+            title: 'Pengajuan anda telah disetujui',
+            subtitle: 'Berikut kode anda: ABC123',
+            time: '2 jam yang lalu',
+            color: Colors.green,
+          ),
+          NotificationItem(
+            title: 'Pengajuan anda tidak dapat disetujui',
+            subtitle: 'Dengan catatan: Pihak yang dituju tidak dapat ditemui',
+            time: 'Kemarin',
+            color: Colors.red,
+          ),
+          // Add more NotificationItems as needed
+        ],
       ),
     );
   }
 }
 
-String generateRandomCode() {
-  Random random = Random();
-  String alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  String code = '';
-  for (int i = 0; i < 6; i++) {
-    code += alphabet[random.nextInt(alphabet.length)];
+class NotificationItem extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String time;
+  final Color color;
+
+  const NotificationItem({
+    required this.title,
+    required this.subtitle,
+    required this.time,
+    required this.color,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+      color: color.withOpacity(0.2),
+      child: ListTile(
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        subtitle: Text(
+          subtitle,
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        trailing: Text(
+          time,
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+      ),
+    );
   }
-  return code;
 }

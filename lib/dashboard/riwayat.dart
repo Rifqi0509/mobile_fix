@@ -21,7 +21,7 @@ class RiwayatApp extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
               ),
               const SizedBox(width: 8.0),
               const Text('Riwayat Pengajuan'),
@@ -129,7 +129,7 @@ class _KunjunganCardState extends State<KunjunganCard> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: DataTable(
                 headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => const Color.fromRGBO(129, 129, 65, 1),
+                  (states) => const Color.fromARGB(255, 252, 170, 6),
                 ),
                 dataRowHeight: 60.0,
                 columns: const [
@@ -295,13 +295,13 @@ class _KunjunganCardState extends State<KunjunganCard> {
       int index = entry.key + 1;
       Kunjungan kunjungan = entry.value;
       Color statusColor = Colors.black;
-      if (kunjungan.status == 'Disetujui') {
+      if (kunjungan.status == 'Approved') {
         statusColor = Colors.green;
-      } else if (kunjungan.status == 'Menunggu Persetujuan') {
+      } else if (kunjungan.status == 'pending') {
         statusColor = Colors.orange;
-      } else if (kunjungan.status == 'Ditolak') {
+      } else if (kunjungan.status == 'Rejected') {
         statusColor = Colors.red;
-      } else if (kunjungan.status == 'Selesai') {
+      } else if (kunjungan.status == 'Processed') {
         statusColor = Colors.blue;
       }
 

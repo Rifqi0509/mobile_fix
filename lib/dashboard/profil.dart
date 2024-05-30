@@ -15,7 +15,7 @@ class EditProfilePage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Profile'),
+          title: const Text('Edit Profile'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -154,35 +154,6 @@ class _EditProfileFormState extends State<EditProfileForm> {
     }
   }
 
-  void _editProfilePicture() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: const Text('Take a picture'),
-              onTap: () {
-                // Handle taking a new picture
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.photo_library),
-              title: const Text('Pilih Foto Dari Galeri'),
-              onTap: () {
-                // Handle picking from gallery
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -191,22 +162,6 @@ class _EditProfileFormState extends State<EditProfileForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(
-                  'https://via.placeholder.com/150'), // Replace with your image URL or asset
-            ),
-            const SizedBox(height: 10.0),
-            TextButton(
-              onPressed: _editProfilePicture,
-              child: const Text(
-                'Edit Profile',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             const SizedBox(height: 20.0),
             TextField(
               controller: _usernameController,
@@ -239,10 +194,26 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 _selectBirthDate(context);
               },
             ),
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: _saveProfile,
-              child: const Text('Save'),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _saveProfile,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'Simpan',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

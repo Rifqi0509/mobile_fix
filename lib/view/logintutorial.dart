@@ -34,10 +34,20 @@ class _MyImageSliderState extends State<MyImageSlider> {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
-          'Asset/image/hijau2.png', // Path to your logo image
+          'Asset/image/putih1.png', // Path to your logo image
           height: 40, // Adjust the height as needed
         ),
-        // Center the logo if needed
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.lightBlueAccent, Colors.blue],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Container(
         color: Colors.white, // Set transparansi di sini

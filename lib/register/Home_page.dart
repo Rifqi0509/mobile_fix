@@ -7,6 +7,8 @@ import 'package:pantau_pro/register/login.dart';
 import 'package:pantau_pro/dashboard/kunjungan.dart';
 import 'package:pantau_pro/dashboard/feedback.dart';
 import 'package:pantau_pro/dashboard/riwayat.dart';
+import 'package:pantau_pro/view/berkunjung.dart';
+import 'package:pantau_pro/view/buatkunjungantutor.dart';
 import 'package:pantau_pro/view/logintutorial.dart';
 import 'dart:async';
 
@@ -157,28 +159,41 @@ class _HomePageState extends State<HomePage> {
                   leading: Icon(Icons.note_add), // Tambahkan ikon di sini
                   title: Text('Membuat Kunjungan'),
                   onTap: () {
-                    // Action when Tutorial Login is tapped
+                    // Action when Membuat Kunjungan is tapped
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PageViewApp(),
+                        builder: (context) => kunjungantutorAPP(),
                       ),
                     );
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.info), // Tambahkan ikon di sini
-                  title: Text('Tentang Pantau Tamu Pro'),
+                  leading: Icon(Icons.people), // Tambahkan ikon di sini
+                  title: Text('Berkunjung'),
                   onTap: () {
-                    // Action when other help page is tapped
+                    // Action when Berkunjung is tapped
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PageViewApp(),
+                        builder: (context) => berkunjungAPP(),
                       ),
                     );
                   },
                 ),
+                // ListTile(
+                //   leading: Icon(Icons.info), // Tambahkan ikon di sini
+                //   title: Text('Tentang Pantau Tamu Pro'),
+                //   onTap: () {
+                //     // Action when Tentang Pantau Tamu Pro is tapped
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => PageViewApp(),
+                //       ),
+                //     );
+                //   },
+                // ),
               ],
             ),
           ],
@@ -203,33 +218,6 @@ class _HomePageState extends State<HomePage> {
         ),
         iconTheme:
             IconThemeData(color: Colors.white), // Set the icon color to black
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NotificationPage(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: CircleAvatar(
-              backgroundImage: AssetImage(
-                  'Asset/image/profil.jpg'), // Your profile image path
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EditProfilePage(),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -451,82 +439,6 @@ class _HomePageState extends State<HomePage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => SurveyApp(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-
-                  PopupMenuItem(
-                    child: ExpansionTile(
-                      leading: Icon(Icons.settings),
-                      title: Text('Pengaturan'),
-                      children: <Widget>[
-                        ListTile(
-                          title: Text('Edit Profil'),
-                          onTap: () {
-                            // Tindakan yang diambil ketika menu Profil dipilih
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EditProfilePage(), // Gantilah dengan halaman profil Anda
-                              ),
-                            );
-                          },
-                        ),
-                        ListTile(
-                          title: Text('Logout'),
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Konfirmasi'),
-                                  content:
-                                      Text('Apakah Anda yakin untuk keluar?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('Tidak'),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Tutup dialog
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: Text('Ya'),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Tutup dialog
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LoginApp(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  PopupMenuItem(
-                    child: ListTile(
-                      leading: Icon(Icons.help),
-                      title: Text('Bantuan'),
-                      onTap: () {
-                        // Action when Help is tapped
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PageViewApp(),
                           ),
                         );
                       },

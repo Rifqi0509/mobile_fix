@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pantau_pro/register/register.dart';
+import 'package:pantau_pro/dashboard/kunjungan.dart';
 
 void main() {
-  runApp(RegisterAPP());
+  runApp(kunjungantutorAPP());
 }
 
-class RegisterAPP extends StatelessWidget {
+class kunjungantutorAPP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,10 +23,10 @@ class _MyImageSliderState extends State<MyImageSlider> {
   int currentPage = 0;
 
   final List<String> images = [
-    "Asset/image/5.png",
-    "Asset/image/6.png", // Ganti dengan gambar yang berbeda jika perlu
-    "Asset/image/7.png",
-    "Asset/image/8.png", // Ganti dengan gambar yang berbeda jika perlu
+    "Asset/image/a.png",
+    "Asset/image/b.png", // Ganti dengan gambar yang berbeda jika perlu
+    "Asset/image/c.png",
+    "Asset/image/d.png", // Ganti dengan gambar yang berbeda jika perlu
   ];
 
   @override
@@ -92,12 +92,12 @@ class _MyImageSliderState extends State<MyImageSlider> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const RegisterPage(),
+                            builder: (context) => const KunjunganPage(),
                           ),
                         );
                       },
                       icon: Icon(Icons.arrow_forward),
-                      label: Text('Lanjut Ke Halaman Register'),
+                      label: Text('Lanjut Ke Halaman Buat Kunjungan'),
                     ),
                   ),
               ],
